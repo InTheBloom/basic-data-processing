@@ -1,6 +1,7 @@
 import json
+from pathlib import Path
 
-TARGET_FILE_NAME = "config.json"
+JSON_FILE_NAME = "config.json"
 JSON_CONTENTS = {
         "title": ("title", str),
         "problemStatement": ("problemStatement", str),
@@ -12,6 +13,8 @@ JSON_CONTENTS = {
 
 class ProblemConfig:
     def __init__ (self, dir_path):
+        assert(isinstance(dir_path, Path))
+
         # パスチェック
         self.dir_path = dir_path
         assert(self.dir_path.is_dir())
@@ -19,7 +22,7 @@ class ProblemConfig:
         # jsonファイル探索
         self.json_file = None
         for entry in self.dir_path.iterdir():
-            if entry.name == TARGET_FILE_NAME:
+            if entry.name == JSON_FILE_NAME:
                 self.json_file = entry
         assert(self.json_file is not None)
 
