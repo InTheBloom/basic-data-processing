@@ -2,7 +2,7 @@
 
 できるだけ簡素な仕様にするのが良さそう。
 
-案: こういうディレクトリ構造を作って、問題とジャッジを収録した静的ページを/output/に生成する。
+案: こういうディレクトリ構造を作って、問題とジャッジを収録した静的ページを/docs/に生成する。
 
 root/
 ├── builder.py
@@ -21,7 +21,7 @@ root/
 │   │   ├── input.txt
 │   │   ├── answer.txt
 │   │   └── judge.js
-├── output/
+├── docs/
 
 configの内容
 - title: string
@@ -78,3 +78,16 @@ ProblemInput、ProblemAnswer、ProblemJudgeも実装した。それぞれ呼び�
 chatGPTと相談してリファクタリング。以下を改善。
 - ProblemConfigへの依存が強すぎるので、メンバの実際の名前定数をProblem側へ移動して、ProblemConfig側はそれを使ってassertする。ProblemConfig側は渡された名前のフィールドを返す関数だけにして、Problem側で仕事を割り振る。
 定数をインポートしていたら循環してしまったので、constants.pyを定義してそこに全部おいた。
+
+
+現状、Problemクラスは以下のメソッドを提供している。
+def __init__ (self, dir_path):
+def get_title (self):
+def get_problem_statement (self):
+def get_input_description (self):
+def get_output_description (self):
+def get_more_information (self):
+def get_use_special_judge (self):
+def get_input_text (self):
+def get_answer_text (self):
+def get_judge_code (self):
