@@ -28,6 +28,9 @@ class Problem:
     def get_input_description (self):
         return self.problem_config.get_field(JSON_CONTENTS["inputDescription"][0])
 
+    def get_has_input (self):
+        return self.problem_config.get_field(JSON_CONTENTS["hasInput"][0])
+
     def get_output_description (self):
         return self.problem_config.get_field(JSON_CONTENTS["outputDescription"][0])
 

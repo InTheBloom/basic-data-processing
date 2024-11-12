@@ -27,6 +27,7 @@ configの内容
 - title: string
 - problemStatement: string
 - inputDescription: string
+- useInput: bool
 - outputDescription: string
 - moreInformation: string
 - useSpecialJudge: bool
@@ -85,9 +86,45 @@ def __init__ (self, dir_path):
 def get_title (self):
 def get_problem_statement (self):
 def get_input_description (self):
+def get_has_input (self):
 def get_output_description (self):
 def get_more_information (self):
 def get_use_special_judge (self):
 def get_input_text (self):
 def get_answer_text (self):
 def get_judge_code (self):
+
+main関数を実装していく。loggerを用意した。
+loggerを用意した関係上、assertで落としていた例外を一部捕まえたい。
+-> https://qiita.com/airis_hirow/items/303bec11a8ae041101ac
+traceback.format_exc()を利用してloggerから出力する。sys.exit(1)で落とすのは変わらない。
+
+よく考えると、入力も与えられるかわからないのでhas_input関数を追加した。
+chatGPTと協議の末、builder_utilsにhtmlgeneratorを追加する方針をとることにした。
+Problemはもうインターフェースとして使うことにして、引数でproblemを受け取る。
+
+いままで成果物側のディレクトリ構成についてあまり考えてなかった。
+dom操作なしで生成することを考えると、この辺が妥当かな？
+
+docs/
+├── index.html
+├── {problem_title[1]}/
+│   ├── index.html
+│   ├── input.js
+│   ├── answer.js
+│   ├── judge.js
+│   ├── input.txt
+├── {problem_title[2]}/
+│   ├── index.html
+│   ├── input.js
+│   ├── answer.js
+│   ├── judge.js
+│   ├── input.txt
+├── {problem_title[3]}/
+│   ├── index.html
+│   ├── input.js
+│   ├── answer.js
+│   ├── judge.js
+│   ├── input.txt
+└── ...
+

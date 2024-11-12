@@ -2,6 +2,7 @@
     "title" : "hoge",
     "problemStatement" : "fuga",
     "inputDescription" : "piyo",
+    "hasInput" : true,
     "outputDescription" : "mimi",
     "moreInformation" : "IOSTREAM",
     "useSpecialJudge" : true
