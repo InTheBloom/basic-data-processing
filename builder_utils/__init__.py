@@ -1,1 +1,1 @@
-print("hi")
+from builder_utils.problem import *

@@ -39,3 +39,35 @@ judge.jsの内容
 (userinput, answer, htmlelement) => {
     return bool;
 };
+
+
+
+
+
+
+
+
+builderの実装
+
+流石にスクリプトの域を超えているので、モジュール分割する。
+どういうことができるべきか？をベースにオブジェクトを組み立てていく。
+基本は委譲のパターンでやる。
+
+class Problem
+-> 期待される振る舞い
+    - 各種ファイルの自動存在チェック + 内容の読み取り(必須ファイル/必須内容がなければ例外送出)
+    - json -> 各項目を関数としてreadonlyで提供
+    - input/answer/judge -> strを返却
+
+    実現のために、以下のクラスを用意
+    class ProblemConfig
+    class ProblemInput
+    class ProblemAnswer
+    class ProblemJudge
+
+
+ProblemConfigを実装した。
+    config.jsonはオブジェクトを仮定。
+    そのJSON_CONTENTSに定義されているメンバがなかったり、型が違ったらassertで落とすようにしてる。(エラーメッセージを作るのめんどい。)
+    get_〇〇メソッドを実装。
+    Problem側から同名で呼んで、実装は委譲してる。(具体的なプロパティ名を隠蔽した。)
