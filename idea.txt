@@ -110,21 +110,21 @@ docs/
 ├── index.html
 ├── {problem_title[1]}/
 │   ├── index.html
-│   ├── input.js
 │   ├── answer.js
 │   ├── judge.js
 │   ├── input.txt
 ├── {problem_title[2]}/
 │   ├── index.html
-│   ├── input.js
 │   ├── answer.js
 │   ├── judge.js
 │   ├── input.txt
 ├── {problem_title[3]}/
 │   ├── index.html
-│   ├── input.js
 │   ├── answer.js
 │   ├── judge.js
 │   ├── input.txt
 └── ...
 
+htmlを適当に埋め込んでみた。
+スクリプトを埋め込もうとしたけど、ちょっとリテラルに気を使いながら書くのはかなり無理がある。ちょっと考える必要がありそう。
+場合によってはこれを生成するためだけのツールが必要かも。
