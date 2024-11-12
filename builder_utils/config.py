@@ -1,15 +1,6 @@
 import json
 from pathlib import Path
-
-JSON_FILE_NAME = "config.json"
-JSON_CONTENTS = {
-        "title": ("title", str),
-        "problemStatement": ("problemStatement", str),
-        "inputDescription": ("inputDescription", str),
-        "outputDescription": ("outputDescription", str),
-        "moreInformation": ("moreInformation", str),
-        "useSpecialJudge": ("useSpecialJudge", bool),
-        }
+from builder_utils.constants import JSON_CONTENTS, JSON_FILE_NAME
 
 class ProblemConfig:
     def __init__ (self, dir_path):
@@ -32,20 +23,5 @@ class ProblemConfig:
             assert(detail[0] in self.json_contents)
             assert(type(self.json_contents[detail[0]]) is detail[1])
 
-    def get_title (self):
-        return self.json_contents[JSON_CONTENTS["title"][0]]
-
-    def get_problem_statement (self):
-        return self.json_contents[JSON_CONTENTS["problemStatement"][0]]
-
-    def get_input_description (self):
-        return self.json_contents[JSON_CONTENTS["inputDescription"][0]]
-
-    def get_output_description (self):
-        return self.json_contents[JSON_CONTENTS["outputDescription"][0]]
-
-    def get_more_information (self):
-        return self.json_contents[JSON_CONTENTS["moreInformation"][0]]
-
-    def get_use_special_judge (self):
-        return self.json_contents[JSON_CONTENTS["useSpecialJudge"][0]]
+    def get_field (self, field_name):
+        return self.json_contents[field_name]

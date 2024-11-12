@@ -1,6 +1,5 @@
 from pathlib import Path
-
-JUDGE_FILE_NAME = "judge.js"
+from builder_utils.constants import JUDGE_FILE_NAME
 
 class ProblemJudge:
     def __init__ (self, dir_path):

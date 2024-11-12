@@ -1,6 +1,5 @@
 from pathlib import Path
-
-ANSWER_FILE_NAME = "answer.txt"
+from builder_utils.constants import ANSWER_FILE_NAME
 
 class ProblemAnswer:
     def __init__ (self, dir_path):

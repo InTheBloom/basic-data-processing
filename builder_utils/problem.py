@@ -3,6 +3,7 @@ from builder_utils.config import ProblemConfig
 from builder_utils.input import ProblemInput
 from builder_utils.answer import ProblemAnswer
 from builder_utils.judge import ProblemJudge
+from builder_utils.constants import JSON_CONTENTS
 
 class Problem:
     def __init__ (self, dir_path):
@@ -19,22 +20,22 @@ class Problem:
 
     # ProblemConfigに委譲している分
     def get_title (self):
-        return self.problem_config.get_title()
+        return self.problem_config.get_field(JSON_CONTENTS["title"][0])
 
     def get_problem_statement (self):
-        return self.problem_config.get_problem_statement()
+        return self.problem_config.get_field(JSON_CONTENTS["problemStatement"][0])
 
     def get_input_description (self):
-        return self.problem_config.get_input_description()
+        return self.problem_config.get_field(JSON_CONTENTS["inputDescription"][0])
 
     def get_output_description (self):
-        return self.problem_config.get_output_description()
+        return self.problem_config.get_field(JSON_CONTENTS["outputDescription"][0])
 
     def get_more_information (self):
-        return self.problem_config.get_more_information()
+        return self.problem_config.get_field(JSON_CONTENTS["moreInformation"][0])
 
     def get_use_special_judge (self):
-        return self.problem_config.get_use_special_judge()
+        return self.problem_config.get_field(JSON_CONTENTS["useSpecialJudge"][0])
 
     # ProblemInputに委譲してる分
     def get_input_text (self):

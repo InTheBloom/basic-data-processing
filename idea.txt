@@ -74,3 +74,7 @@ ProblemConfigを実装した。
     Problem側から同名で呼んで、実装は委譲してる。(具体的なプロパティ名を隠蔽した。)
 
 ProblemInput、ProblemAnswer、ProblemJudgeも実装した。それぞれ呼び出すとテキストを返すメソッドだけ生えてる。
+
+chatGPTと相談してリファクタリング。以下を改善。
+- ProblemConfigへの依存が強すぎるので、メンバの実際の名前定数をProblem側へ移動して、ProblemConfig側はそれを使ってassertする。ProblemConfig側は渡された名前のフィールドを返す関数だけにして、Problem側で仕事を割り振る。
+定数をインポートしていたら循環してしまったので、constants.pyを定義してそこに全部おいた。

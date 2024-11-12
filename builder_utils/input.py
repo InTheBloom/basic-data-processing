@@ -1,6 +1,5 @@
 from pathlib import Path
-
-INPUT_FILE_NAME = "input.txt"
+from builder_utils.constants import INPUT_FILE_NAME
 
 class ProblemInput:
     def __init__ (self, dir_path):
