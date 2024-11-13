@@ -109,7 +109,7 @@ def main ():
     # リソースディレクトリの全ディレクトリをProblemディレクトリだとみなして構築
     logger.info("Read the problems.")
     section_list = []
-    for dir_entry in resource_dir.iterdir():
+    for problem_number, dir_entry in enumerate(sorted(list(resource_dir.iterdir())), start = 1):
         if not dir_entry.is_dir():
             continue
         try:
@@ -123,6 +123,7 @@ def main ():
 
         section = section_template.render({
                 "title": problem.get_title(),
+                "problemNumber": problem_number,
                 "problemStatement": problem.get_problem_statement(),
                 "inputDescription": problem.get_input_description(),
                 "useInput": problem.get_has_input(),
@@ -141,7 +142,7 @@ def main ():
 
         # 必要なファイルの配置
         if problem.get_has_input():
-            input_file_path = target_dir.joinpath(problem.get_title() + "_" + builder_utils.constants.INPUT_FILE_NAME)
+            input_file_path = target_dir.joinpath("problem" + str(problem_number) + "_" + builder_utils.constants.INPUT_FILE_NAME)
 
             logger.info(f"Generate input file {input_file_path}")
             input_file_path.write_text(problem.get_input_text())

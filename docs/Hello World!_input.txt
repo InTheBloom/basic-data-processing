@@ -1,2 +1,0 @@
-this is input text
-including LF line breaks

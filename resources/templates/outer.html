@@ -31,7 +31,8 @@
                     console.error("This is not string!");
                     return "";
                 }
-                return S.replace("/\r\n?/g", "\n");
+
+                return S.replace(/\r\n|\n|\r/g, "\n");
             }
 
             function is_file_selected (form_element) {

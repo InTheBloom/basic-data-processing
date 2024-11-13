@@ -1,2 +1,1 @@
-this is answer text.
-including line break.
+6
