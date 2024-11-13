@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
+# 環境変数PYTHONUTF8を1に設定しないと標準出力がcp932になる。注意。
+
 from builder_utils import Problem
-#from builder_utils import build_html_problem_section
+import builder_utils.constants
 import pathlib
 import os
 import sys
@@ -52,6 +56,22 @@ def check_resource_directory (resource_dir):
 
     logger.info(f"Resource directory is found.")
 
+def init_target_directory (target_dir):
+    assert(isinstance(target_dir, pathlib.Path))
+    logger.info(f"Trying to find target directory {target_dir}")
+
+    if not target_dir.exists():
+        logger.info(f"{target_dir} is not found.")
+        os.makedirs(target_dir)
+        logger.info(f"{target_dir} is created.")
+        return
+
+    logger.info(f"Trying to recreate {target_dir}")
+    import shutil
+    shutil.rmtree(target_dir)
+    os.makedirs(target_dir)
+    logger.info(f"Recreation successed.")
+
 def jinja_init (template_dir):
     assert(isinstance(template_dir, pathlib.Path))
     logger.info(f"Trying to find html template directory {template_dir}")
@@ -65,8 +85,7 @@ def jinja_init (template_dir):
     logger.info(f"Html template directory is found.")
 
     global jinja_env
-    jinja_env = Environment(loader = FileSystemLoader(template_dir), autoescape = select_autoescape())
-
+    jinja_env = Environment(loader = FileSystemLoader(template_dir))
 
 def main ():
     current_dir = pathlib.Path.cwd()
@@ -77,13 +96,19 @@ def main ():
     resource_dir = current_dir.joinpath(RESOURCE_DIR_NAME)
     check_resource_directory(resource_dir)
 
+    target_dir = current_dir.joinpath(TARGET_DIR_NAME)
+    init_target_directory(target_dir)
+
     # jinjaの初期化
     template_dir = current_dir.joinpath(TEMPLATE_DIR_NAME)
     jinja_init(template_dir)
 
+    outer_template = jinja_env.get_template("outer.html")
+    section_template = jinja_env.get_template("section.html")
 
     # リソースディレクトリの全ディレクトリをProblemディレクトリだとみなして構築
     logger.info("Read the problems.")
+    section_list = []
     for dir_entry in resource_dir.iterdir():
         if not dir_entry.is_dir():
             continue
@@ -92,6 +117,46 @@ def main ():
         except AssertionError as e:
             logger.error(f"Error occurred while reading {dir_entry}\n" + traceback.format_exc())
             sys.exit(1)
+        
+        logger.info(f"Loaded {dir_entry}")
+        logger.info(f"Build problem section from {dir_entry}")
+
+        section = section_template.render({
+                "title": problem.get_title(),
+                "problemStatement": problem.get_problem_statement(),
+                "inputDescription": problem.get_input_description(),
+                "useInput": problem.get_has_input(),
+                "useAnswer": problem.get_has_answer(),
+                "outputDescription": problem.get_output_description(),
+                "moreInformation": problem.get_more_information(),
+                "useSpecialJudge": problem.get_use_special_judge(),
+                "input_text": problem.get_input_text(),
+                "answer_text": problem.get_answer_text(),
+                "judge_code": problem.get_judge_code(),
+                "INPUT_FILE_NAME": builder_utils.constants.INPUT_FILE_NAME,
+                })
+        section_list.append(section)
+
+        logger.info(f"Building successed!")
+
+        # 必要なファイルの配置
+        if problem.get_has_input():
+            input_file_path = target_dir.joinpath(problem.get_title() + "_" + builder_utils.constants.INPUT_FILE_NAME)
+
+            logger.info(f"Generate input file {input_file_path}")
+            input_file_path.write_text(problem.get_input_text())
+            logger.info(f"Generation successed!")
+
+    logger.info(f"Build whole html...")
+    body = "".join(section_list)
+    html = outer_template.render({"contents": body})
+    logger.info(f"Successed!")
+
+    # index.htmlの出力
+    target_dir.joinpath("index.html").write_text(html)
+    logger.info(f"Generated {target_dir.joinpath("index.html")}")
+
+    logger.info(f"All done! see {target_dir}")
 
 if __name__ == "__main__":
     main()
