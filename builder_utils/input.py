@@ -19,5 +19,6 @@ class ProblemInput:
         return self.input_file is not None
 
     def get_input_text (self):
-        assert(self.file_exists())
+        if not self.file_exists():
+            return ""
         return self.input_file.read_text()

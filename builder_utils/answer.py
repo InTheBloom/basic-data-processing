@@ -19,5 +19,6 @@ class ProblemAnswer:
         return self.answer_file is not None
 
     def get_answer_text (self):
-        assert(self.file_exists())
+        if not self.file_exists():
+            return ""
         return self.answer_file.read_text()

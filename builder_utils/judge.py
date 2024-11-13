@@ -19,5 +19,6 @@ class ProblemJudge:
         return self.judge_file is not None
 
     def get_judge_code (self):
-        assert(self.judge_file is not None)
+        if not self.file_exists():
+            return ""
         return self.judge_file.read_text()
