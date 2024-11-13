@@ -1,70 +1,73 @@
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("{{ title }}_input");
-        const sub_btn = document.getElementById("{{ title }}_submit");
+<li>
+    <div>
+        <h2>{{ title }}</h2>
+        <h3>問題</h3>
+        <p>{{ ProblemStatement }}</p>
 
-        sub_btn.addEventListener("click", () => {
-            if (!is_file_selected(form)) {
-                alert("提出ファイルが選択されていません。");
-                return;
-            }
+        <h3>入力</h3>
+        <p>{{ inputDescription }}</p>
 
-            form.files[0].text()
-                .then((answer_as_utf8) => {
-                    check(user_submission);
+        {{% if useInput %}}
+        <a href="{{ title }}_{{ INPUT_FILE_NAME }}">入力ファイル</a>
+        {{% endif %}}
+
+        <h3>出力</h3>
+        <p>{{ outputDescription }}</p>
+
+        {{% if not moreInformation == "" %}}
+        <h3>補足</h3>
+        <p>{{ moreInformation }}</p>
+        {{% endif %}}
+
+        <h3>ジャッジ</h3>
+        <label for="{{ title }}_fileinput"><p>提出ファイルを選択してください。</p></label>
+        <input type="file" id="{{ title }}_input" name="{{ title }}_fileinput">
+        <button id="{{ title }}_submit">提出</button>
+
+        <!-- ジャッジスクリプト -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const form = document.getElementById("{{ title }}_input");
+                const sub_btn = document.getElementById("{{ title }}_submit");
+
+                sub_btn.addEventListener("click", () => {
+                    if (!is_file_selected(form)) {
+                        alert("提出ファイルが選択されていません。");
+                        return;
+                    }
+
+                    form.files[0].text()
+                        .then((answer_as_utf8) => {
+                            check(user_submission);
+                        });
+
+                    function check (user_submission) {
+                        let input = "";
+                        {{% if useInput %}}
+                        input = "{{ input_text }}";
+                        {{% endif %}}
+
+                        let answer = "";
+                        {{% if useAnswer %}}
+                        answer = "{{ answer_text }}";
+                        {{% endif %}}
+
+                        {{% if useSpecialJudge %}}
+                        const f = {{ judge_code }}
+                        const ok = f(user_submission, input, answer, editable_element);
+                        {{% else %}}
+                        const ok = strict_match_ignore_trailing_newline(user_submission, answer);
+                        {{% endif %}}
+
+                        if (ok) {
+                            alert("正解！");
+                        }
+                        else {
+                            alert("不正解...");
+                        }
+                    }
                 });
-
-            function check (user_submission) {
-                let input = "";
-                {{% if useInput %}}
-                input = "{{ input_text }}";
-                {{% endif %}}
-
-                let answer = "";
-                {{% if useAnswer %}}
-                answer = "{{ answer_text }}";
-                {{% endif %}}
-
-                {{% if useSpecialJudge %}}
-                const f = {{ judge_code }}
-                const ok = f(user_submission, input, answer, editable_element);
-                {{% else %}}
-                const ok = strict_match_ignore_trailing_newline(user_submission, answer);
-                {{% endif %}}
-
-                if (ok) {
-                    alert("正解！");
-                }
-                else {
-                    alert("不正解...");
-                }
-            }
-        });
-    });
-</script>
-
-<div>
-    <h2>{{ title }}</h2>
-    <h3>問題</h3>
-    <p>{{ ProblemStatement }}</p>
-
-    <h3>入力</h3>
-    <p>{{ inputDescription }}</p>
-
-    {{% if useInput %}}
-    <a href="{{ title }}_{{ INPUT_FILE_NAME }}">入力ファイル</a>
-    {{% endif %}}
-
-    <h3>出力</h3>
-    <p>{{ outputDescription }}</p>
-
-    {{% if not moreInformation == "" %}}
-    <h3>補足</h3>
-    <p>{{ moreInformation }}</p>
-    {{% endif %}}
-
-    <h3>ジャッジ</h3>
-    <label for="{{ title }}_fileinput"><p>提出ファイルを選択してください。</p></label>
-    <input type="file" id="{{ title }}_input" name="{{ title }}_fileinput">
-    <button id="{{ title }}_submit">提出</button>
-</div>
+            });
+        </script>
+    </div>
+</li>
