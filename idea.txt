@@ -34,11 +34,12 @@ configの内容
 - useSpecialJudge: bool
 
 judge.jsの内容
-    無名関数を書く。第一引数はユーザの解答、第二引数はこちらが渡した入力、第三引数はhtmlelementが渡される。
+    無名関数を書く。ユーザーの提出したテキスト、インプット、アウトプット、書き換えていいhtmlが渡される。
+    なければ空文字列を渡す。
     ジャッジはhtmlに詳細情報を出力することが許可される。
     返り値は正答かどうかのbool値
 
-(userinput, answer, htmlelement) => {
+(userinput, input, answer, htmlelement) => {
     return bool;
 };
 
@@ -143,3 +144,11 @@ ChatGPTと協議。現状のProblemクラスの柔軟性を上げる。
 そろそろJinjaを使う準備をする。
 resourcesにtemplatesを置くことにする。すると、problemのディレクトリを別の場所に動かさないといけない。
 -> 新しいディレクトリツリーを作る。作った。
+
+とりあえずmainの中にJinjaを利用するコードを書く感じでやります。
+基本的な戦略としては、まずガワを用意する。ガワはほんとにガワで、セクション毎にテンプレートを用意して、そこでビルドした文字列を叩き込む感じで。
+
+というわけで
+- outer.html
+- section.html
+を用意する。

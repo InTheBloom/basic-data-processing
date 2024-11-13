@@ -21,8 +21,8 @@ def test ():
 
     print(problem.get_judge_code())
 
-from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
 # loggerの設定
+from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
 logger = getLogger()
 logger.setLevel(DEBUG)
 st_handler = StreamHandler()
@@ -32,15 +32,15 @@ logger.addHandler(st_handler)
 
 # 定数
 RESOURCE_DIR_NAME = "resources/problems"
+TEMPLATE_DIR_NAME = "resources/templates"
 TARGET_DIR_NAME = "docs"
 
-def main ():
-    current_dir = pathlib.Path.cwd()
-    logger.info("Started to build.")
-    logger.info(f"Current directory is {current_dir}")
+# jinja2(jinja_init()で初期化)
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+jinja_env = None
 
-    # リソースディレクトリの検索
-    resource_dir = current_dir.joinpath(RESOURCE_DIR_NAME)
+def check_resource_directory (resource_dir):
+    assert(isinstance(resource_dir, pathlib.Path))
     logger.info(f"Trying to find resource directory {resource_dir}")
 
     if not resource_dir.exists():
@@ -51,6 +51,37 @@ def main ():
         sys.exit(1)
 
     logger.info(f"Resource directory is found.")
+
+def jinja_init (template_dir):
+    assert(isinstance(template_dir, pathlib.Path))
+    logger.info(f"Trying to find html template directory {template_dir}")
+
+    if not template_dir.exists():
+        logger.error(f"{template_dir} is not found.")
+        sys.exit(1)
+    if not template_dir.is_dir():
+        logger.error(f"{template_dir} must be a directory.")
+        sys.exit(1)
+    logger.info(f"Html template directory is found.")
+
+    global jinja_env
+    jinja_env = Environment(loader = FileSystemLoader(template_dir), autoescape = select_autoescape())
+
+
+def main ():
+    current_dir = pathlib.Path.cwd()
+    logger.info("Started to build.")
+    logger.info(f"Current directory is {current_dir}")
+
+    # ディレクトリチェック
+    resource_dir = current_dir.joinpath(RESOURCE_DIR_NAME)
+    check_resource_directory(resource_dir)
+
+    # jinjaの初期化
+    template_dir = current_dir.joinpath(TEMPLATE_DIR_NAME)
+    jinja_init(template_dir)
+
+    jinja_env.get_template("a.html")
 
     # リソースディレクトリの全ディレクトリをProblemディレクトリだとみなして構築
     logger.info("Read the problems.")
