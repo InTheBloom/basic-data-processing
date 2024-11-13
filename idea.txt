@@ -7,20 +7,21 @@
 root/
 ├── builder.py
 ├── resources/
-│   ├── problem1/
-│   │   ├── config.json
-│   │   ├── input.txt
-│   │   ├── answer.txt
-│   │   └── judge.js
-│   ├── problem2/
-│   │   ├── config.json
-│   │   ├── input.txt
-│   │   └── answer.txt
-│   ├── problem3/
-│   │   ├── config.json
-│   │   ├── input.txt
-│   │   ├── answer.txt
-│   │   └── judge.js
+│   ├── problems/
+│   │   ├── problem1/
+│   │   │   ├── config.json
+│   │   │   ├── input.txt
+│   │   │   ├── answer.txt
+│   │   │   └── judge.js
+│   │   ├── problem2/
+│   │   │   ├── config.json
+│   │   │   ├── input.txt
+│   │   │   └── answer.txt
+│   │   ├── problem3/
+│   │   │   ├── config.json
+│   │   │   ├── input.txt
+│   │   │   ├── answer.txt
+│   │   │   └── judge.js
 ├── docs/
 
 configの内容
@@ -128,3 +129,17 @@ docs/
 htmlを適当に埋め込んでみた。
 スクリプトを埋め込もうとしたけど、ちょっとリテラルに気を使いながら書くのはかなり無理がある。ちょっと考える必要がありそう。
 場合によってはこれを生成するためだけのツールが必要かも。
+-> どうやらJinja2というテンプレートライブラリがあるらしい。雰囲気はかなり使えそうな感じ。調査する。
+どうやら使えそうな感じがする。
+
+ChatGPTと協議。現状のProblemクラスの柔軟性を上げる。
+今では、必要ないファイルも要求される仕組みになっている。これは良くない。
+サブクラスの方でファイルが存在するかのboolを持つことにする。
+ファイルがないのに要求されたら例外を投げる。
+
+もう一つバリデータクラスを作って、Problemのインスタンスを受け取って整合性をチェックするようにする。
+-> やった。外部からの見た目は変わってない。
+
+そろそろJinjaを使う準備をする。
+resourcesにtemplatesを置くことにする。すると、problemのディレクトリを別の場所に動かさないといけない。
+-> 新しいディレクトリツリーを作る。作った。

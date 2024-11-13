@@ -4,6 +4,7 @@ from builder_utils.input import ProblemInput
 from builder_utils.answer import ProblemAnswer
 from builder_utils.judge import ProblemJudge
 from builder_utils.constants import JSON_CONTENTS
+from builder_utils.validator import ProblemValidator
 
 class Problem:
     def __init__ (self, dir_path):
@@ -17,6 +18,8 @@ class Problem:
         self.problem_input = ProblemInput(self.dir_path)
         self.problem_answer = ProblemAnswer(self.dir_path)
         self.problem_judge = ProblemJudge(self.dir_path)
+
+        ProblemValidator.validate(self)
 
     # ProblemConfigに委譲している分
     def get_title (self):

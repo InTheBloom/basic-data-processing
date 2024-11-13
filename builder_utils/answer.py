@@ -14,7 +14,10 @@ class ProblemAnswer:
         for entry in self.dir_path.iterdir():
             if entry.name == ANSWER_FILE_NAME:
                 self.answer_file = entry
-        assert(self.answer_file is not None)
+
+    def file_exists (self):
+        return self.answer_file is not None
 
     def get_answer_text (self):
+        assert(self.file_exists())
         return self.answer_file.read_text()

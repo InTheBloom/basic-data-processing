@@ -1,5 +1,5 @@
 from builder_utils import Problem
-from builder_utils import build_html_problem_section
+#from builder_utils import build_html_problem_section
 import pathlib
 import os
 import sys
@@ -31,7 +31,7 @@ st_handler.setFormatter(Formatter('[%(levelname)s] %(asctime)s :In function %(fu
 logger.addHandler(st_handler)
 
 # 定数
-RESOURCE_DIR_NAME = "resources"
+RESOURCE_DIR_NAME = "resources/problems"
 TARGET_DIR_NAME = "docs"
 
 def main ():

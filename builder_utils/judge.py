@@ -14,7 +14,10 @@ class ProblemJudge:
         for entry in self.dir_path.iterdir():
             if entry.name == JUDGE_FILE_NAME:
                 self.judge_file = entry
-        assert(self.judge_file is not None)
+
+    def file_exists (self):
+        return self.judge_file is not None
 
     def get_judge_code (self):
+        assert(self.judge_file is not None)
         return self.judge_file.read_text()

@@ -14,7 +14,10 @@ class ProblemInput:
         for entry in self.dir_path.iterdir():
             if entry.name == INPUT_FILE_NAME:
                 self.input_file = entry
-        assert(self.input_file is not None)
+
+    def file_exists (self):
+        return self.input_file is not None
 
     def get_input_text (self):
+        assert(self.file_exists())
         return self.input_file.read_text()
