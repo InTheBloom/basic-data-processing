@@ -81,7 +81,6 @@ def main ():
     template_dir = current_dir.joinpath(TEMPLATE_DIR_NAME)
     jinja_init(template_dir)
 
-    jinja_env.get_template("a.html")
 
     # リソースディレクトリの全ディレクトリをProblemディレクトリだとみなして構築
     logger.info("Read the problems.")

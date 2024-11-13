@@ -3,6 +3,7 @@ JSON_CONTENTS = {
         "problemStatement": ("problemStatement", str),
         "inputDescription": ("inputDescription", str),
         "hasInput": ("hasInput", bool),
+        "hasAnswer": ("hasAnswer", bool),
         "outputDescription": ("outputDescription", str),
         "moreInformation": ("moreInformation", str),
         "useSpecialJudge": ("useSpecialJudge", bool),

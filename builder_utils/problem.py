@@ -34,6 +34,9 @@ class Problem:
     def get_has_input (self):
         return self.problem_config.get_field(JSON_CONTENTS["hasInput"][0])
 
+    def get_has_answer (self):
+        return self.problem_config.get_field(JSON_CONTENTS["hasAnswer"][0])
+
     def get_output_description (self):
         return self.problem_config.get_field(JSON_CONTENTS["outputDescription"][0])
 

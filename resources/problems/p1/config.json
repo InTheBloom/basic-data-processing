@@ -3,6 +3,7 @@
     "problemStatement" : "fuga",
     "inputDescription" : "piyo",
     "hasInput" : true,
+    "hasAnswer": true,
     "outputDescription" : "mimi",
     "moreInformation" : "IOSTREAM",
     "useSpecialJudge" : true
