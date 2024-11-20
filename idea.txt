@@ -181,3 +181,23 @@ resources/rootを設けて、そこ以下に設置したファイルはconfig.js
 いろいろ考えて、次のような仕様がいいんじゃないかと思った。
 1. ファイルはproblem、meta、other3種類に大別される。problem、metaはconfig.jsonが必須。config.jsonもいくつかの項目は必須。それ以外は自由。(ただしobjectで、stringをキーにすることは必須)
 2. ディレクトリはそのままコピーする。有向グラフとしてディレクトリ構造を保持して、構築しながらファイルも構築する。
+
+JSON(ファイル名はconfig.jsonのみ許容)に必須な属性の定義
+# 共通
+- fileType: "problem"|"meta"
+
+# problem
+- title: str
+- problemStatement: str
+- inputDescription: str
+- inputFilePath: str
+- outputDescription: str
+- outputFilePath: str
+- moreInformation: str
+- judgeFilePath: str
+
+# meta
+-
+
+# 暗黙に定義されるもの
+-

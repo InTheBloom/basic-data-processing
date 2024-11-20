@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # 環境変数PYTHONUTF8を1に設定しないと標準出力がcp932になる。注意。
 
 from builder_utils import Problem
@@ -10,20 +8,15 @@ import sys
 import traceback
 
 def test ():
-    problem = Problem(pathlib.Path("./resources/problem1"))
-    print(problem.get_title())
-    print(problem.get_problem_statement())
-    print(problem.get_input_description())
-    print(problem.get_has_input())
-    print(problem.get_output_description())
-    print(problem.get_more_information())
-    print(problem.get_use_special_judge())
+    from builder_utils.directory_tree import DirectoryTree
+    rootdir = pathlib.Path("tests/root").resolve()
+    d = DirectoryTree(rootdir)
+    targetdir = pathlib.Path("tests/target").resolve()
+    dirs = d.build_from(targetdir)
+    print(dirs)
 
-    print(problem.get_input_text())
-
-    print(problem.get_answer_text())
-
-    print(problem.get_judge_code())
+test()
+sys.exit(0)
 
 # loggerの設定
 from logging import getLogger, StreamHandler, FileHandler, DEBUG, Formatter
@@ -54,8 +47,6 @@ def check_resource_directory (resource_dir):
         logger.error(f"{resource_dir} must be a directory.")
         sys.exit(1)
 
-    logger.info(f"Resource directory is found.")
-
 def init_target_directory (target_dir):
     assert(isinstance(target_dir, pathlib.Path))
     logger.info(f"Trying to find target directory {target_dir}")
@@ -70,7 +61,6 @@ def init_target_directory (target_dir):
     import shutil
     shutil.rmtree(target_dir)
     os.makedirs(target_dir)
-    logger.info(f"Recreation successed.")
 
 def jinja_init (template_dir):
     assert(isinstance(template_dir, pathlib.Path))
