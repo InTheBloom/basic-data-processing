@@ -1,0 +1,12 @@
+{
+    "fileType" : "problem",
+    "templateFileName" : "basic.html",
+    "title" : "hello",
+    "problemStatement" : "hello worldを出力してください。",
+    "inputDescription" : "入力の説明",
+    "inputFilePath" : "",
+    "outputDescription" : "出力の説明",
+    "outputFilePath" : "",
+    "moreInformation" : "追加情報",
+    "judgeFilePath" : ""
+}

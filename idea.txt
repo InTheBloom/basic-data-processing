@@ -203,7 +203,7 @@ JSON(ファイル名はconfig.jsonのみ許容)に必須な属性の定義
 -
 
 # 暗黙に定義されるもの
--
+- filePath: str
 
 追記: templateに関する設定をバリデーションしようとするとそのあたりの情報も拾ってこないといけない。一旦保留。
 
@@ -217,3 +217,8 @@ binary -> textは<class 'bytes'>に対してdecodeメソッドをしてやれば
 ただし、絶対パスはドライブのルートではなくrootdirを起点とする。
 
 各種チェックはちょっと仕組み化するにはシンドいのである程度のべた書きは許容する方向で。でかくなってきたらリファクタリング入れる。
+
+jinja2のテンプレートに渡すcontextは、other、problem、meta、hereのフィールドを持つ。hereはconfig.jsonのパスを渡す。
+- other : {path: val}の形式
+- problem : {path: dict}の形式
+- meta : {path: dict}の形式

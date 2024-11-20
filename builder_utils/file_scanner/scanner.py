@@ -14,10 +14,6 @@ class FileScanner:
         files = self._search_from(rootdir)
         self.problem, self.meta, self.other = self._check_and_categorize_files(rootdir, files)
 
-        print(self.problem)
-        print(self.meta)
-        print(self.other)
-
     def _search_from (self, rootdir):
         # 幅優先探索
         q = Queue()
@@ -56,15 +52,15 @@ class FileScanner:
         # fileTypeのチェック
         if ((not json_contents["fileType"] == FileType.PROBLEM.value) and
         (not json_contents["fileType"] == FileType.META.value)):
-            raise Exception(f"In file {path}, field fileType must be one of following\n- {FileType.PROBLEM}\n- {FileType.META}")
+            raise Exception(f"In file {path}, field fileType must be one of following\n- {FileType.PROBLEM.value}\n- {FileType.META.value}")
 
         # TODO: テンプレートの存在もチェック(実装するかは不明)
 
         if json_contents["fileType"] == FileType.PROBLEM.value:
-            self._check_problem_config(path, json_contents, rootdir, files)
+            self._check_problem_config(json_contents, path, rootdir, files)
 
         if json_contents["fileType"] == FileType.META.value:
-            self._check_meta_config(path, json_contents, rootdir, files)
+            self._check_meta_config(json_contents, path, rootdir, files)
 
         return json_contents["fileType"]
 
@@ -77,12 +73,39 @@ class FileScanner:
             if type(json_contents[field]) is not valuetype:
                 raise Exception(f"In file {path}, type of {field} must be {valuetype}")
 
-        # inputFilePathのチェック
-        # outputFilePathのチェック
-        # judgeFilePathのチェック
+        # path_check(s): json_contents[s]のファイルが存在するかチェック
+        # 相対パスに直した後json_contents[s]に詰めなおす
+        def path_check (s):
+            from pathlib import Path
+            # 空の時はOK
+            if json_contents[s] == "":
+                return
+
+            p = Path(json_contents[s])
+            if p.is_absolute():
+                np = rootdir.joinpath(p)
+                if not np.exists():
+                    raise Exception(f"{p} doesn't exist.")
+                if not np.is_file():
+                    raise Exception(f"{p} is not file.")
+                # 相対パスに直す
+                json_contents[s] = np.relative_to(path.parent)
+                return
+            if not p.exists():
+                raise Exception(f"{p} doesn't exist.")
+            if not p.is_file():
+                raise Exception(f"{p} is not file.")
+
+        # inputFilePath
+        # outputFilePath
+        # judgeFilePath
+        # のチェック
+        path_check("inputFilePath")
+        path_check("outputFilePath")
+        path_check("judgeFilePath")
 
     def _check_meta_config (self, json_contents, path, rootdir, files):
-        from builder_utils.constants import RequiredJsonKeysProblem
+        from builder_utils.constants import RequiredJsonKeysMeta
 
         for field, valuetype in RequiredJsonKeysMeta.items():
             if not field in json_contents:
@@ -101,10 +124,13 @@ class FileScanner:
         for path, val in files.items():
             if path.name == FileName.CONFIG.value:
                 t = self._check_config(path, rootdir, files)
-            else:
-                other[path] = val
-
+                if t == FileType.PROBLEM.value:
+                    problem[path] = val
+                if t == FileType.META.value:
+                    meta[path] = val
+                continue
+            other[path] = val
         return (problem, meta, other)
 
-    def build_from (self, rootdir):
-        pass
+    def get_file_information (self):
+        return (self.problem, self.meta, self.other)

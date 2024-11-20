@@ -21,8 +21,16 @@ def test_directory_tree ():
 
 def test_file_scanner ():
     from builder_utils.file_scanner import FileScanner
+    from builder_utils.file_builder import FileBuilder
     rootdir = pathlib.Path("tests/root").resolve()
-    f = FileScanner(rootdir)
+    file = FileScanner(rootdir)
+    info = file.get_file_information()
+
+    builder = FileBuilder(*info)
+
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
+    jinja_env = Environment(loader = FileSystemLoader("tests/templates"))
+    builder.build_from(pathlib.Path("tests/target"), jinja_env)
 
 test_runner()
 sys.exit(0)
@@ -41,9 +49,6 @@ RESOURCE_DIR_NAME = "resources/problems"
 TEMPLATE_DIR_NAME = "resources/templates"
 TARGET_DIR_NAME = "docs"
 
-# jinja2(jinja_init()で初期化)
-from jinja2 import Environment, FileSystemLoader, select_autoescape
-jinja_env = None
 
 def check_resource_directory (resource_dir):
     assert(isinstance(resource_dir, pathlib.Path))
