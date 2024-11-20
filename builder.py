@@ -7,7 +7,11 @@ import os
 import sys
 import traceback
 
-def test ():
+def test_runner ():
+    test_directory_tree()
+    test_file_scanner()
+
+def test_directory_tree ():
     from builder_utils.directory_tree import DirectoryTree
     rootdir = pathlib.Path("tests/root").resolve()
     d = DirectoryTree(rootdir)
@@ -15,7 +19,12 @@ def test ():
     dirs = d.build_from(targetdir)
     print(dirs)
 
-test()
+def test_file_scanner ():
+    from builder_utils.file_scanner import FileScanner
+    rootdir = pathlib.Path("tests/root").resolve()
+    f = FileScanner(rootdir)
+
+test_runner()
 sys.exit(0)
 
 # loggerの設定
@@ -145,7 +154,7 @@ def main ():
 
     # index.htmlの出力
     target_dir.joinpath("index.html").write_text(html)
-    logger.info(f"Generated {target_dir.joinpath("index.html")}")
+    logger.info(f'Generated {target_dir.joinpath("index.html")}')
 
     logger.info(f"All done! see {target_dir}")
 

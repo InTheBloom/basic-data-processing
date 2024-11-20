@@ -14,21 +14,26 @@ class DirectoryTree:
         if not rootdir.is_dir():
             raise Exception(f"{rootdir} is not directory.")
 
+        rootdir = rootdir.resolve()
+        self.child = self._search_from(rootdir)
+
+    def _search_from (self, rootdir):
         # 幅優先探索
         q = Queue()
-        self.child = {}
+        child = {}
         q.put(rootdir)
 
         while not q.empty():
             cur = q.get()
-            self.child[cur.relative_to(rootdir)] = []
+            child[cur.relative_to(rootdir)] = []
 
             # ディレクトリを詰める(rootdirからの相対パスで詰める)
             for entry in cur.iterdir():
                 if not entry.is_dir():
                     continue
-                self.child[cur.relative_to(rootdir)].append(entry.relative_to(rootdir))
+                child[cur.relative_to(rootdir)].append(entry.relative_to(rootdir))
                 q.put(entry)
+        return child
 
     # rootdir以下に取得しているディレクトリ構造を作成。
     # 幅優先順にした相対パスのリストを返却
