@@ -8,9 +8,65 @@
         <title>{{ problem[here]["title"] }}</title>
 
         {{ module["judge_utils.js"] }}
+
+        <!-- ジャッジスクリプト -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const form = document.getElementById("{{ here }}_input");
+                const sub_btn = document.getElementById("{{ here }}_submit");
+
+                sub_btn.addEventListener("click", () => {
+                    if (!is_file_selected(form)) {
+                        alert("提出ファイルが選択されていません。");
+                        return;
+                    }
+
+                    form.files[0].text().then((user_submission) => {
+                        const ok = check(user_submission);
+                        if (ok) {
+                            alert("正解！");
+                        }
+                        else {
+                            alert("不正解...");
+                        }
+                        form.value = "";
+                    });
+
+
+                    function check (user_submission) {
+                        let input = "";
+                        {% if not problem[here]["inputFilePath"] == "" %}
+                        input = String.raw`{{ other[problem[here]["inputFilePath"]]["value"] }}`;
+                        {% endif %}
+
+                        let answer = "";
+                        {% if not problem[here]["outputFilePath"] == "" %}
+                        answer = String.raw`{{ other[problem[here]["outputFilePath"]]["value"] }}`;
+                        {% endif %}
+
+                        // LFへ統一
+                        input = normalize_newlines_to_lf(input);
+                        answer = normalize_newlines_to_lf(answer);
+                        user_submission = normalize_newlines_to_lf(user_submission);
+
+                        {% if not problem[here]["judgeFilePath"] == "" %}
+                        const f = {{ other[problem[here]["judgeFilePath"]]["value"] }}
+                        const editable_element = document.getElementById("{{ here }}_judge_details");
+                        const ok = f(user_submission, input, answer, editable_element);
+                        {% else %}
+                        const ok = strict_match_ignore_trailing_newline(user_submission, answer);
+                        {% endif %}
+
+                        return ok;
+                    }
+                });
+            });
+        </script>
     </head>
 
     <body>
+        <p><a href="{{ baseURL }}">トップページに戻る</a></p>
+
         <h1>{{ problem[here]["problemTitle"] }}</h1>
         <h2>問題文</h2>
         <div>{{ problem[here]["problemStatement"] }}</div>
@@ -35,59 +91,5 @@
             <button id="{{ here }}_submit">提出</button>
             <p>ジャッジ詳細情報</p>
             <div id="{{ here }}_judge_details"></div>
-
-            <!-- ジャッジスクリプト -->
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const form = document.getElementById("{{ here }}_input");
-                    const sub_btn = document.getElementById("{{ here }}_submit");
-
-                    sub_btn.addEventListener("click", () => {
-                        if (!is_file_selected(form)) {
-                            alert("提出ファイルが選択されていません。");
-                            return;
-                        }
-
-                        form.files[0].text().then((user_submission) => {
-                            const ok = check(user_submission);
-                            if (ok) {
-                                alert("正解！");
-                            }
-                            else {
-                                alert("不正解...");
-                            }
-                            form.value = "";
-                        });
-
-
-                        function check (user_submission) {
-                            let input = "";
-                            {% if not problem[here]["inputFilePath"] == "" %}
-                            input = String.raw`{{ other[problem[here]["inputFilePath"]]["value"] }}`;
-                            {% endif %}
-
-                            let answer = "";
-                            {% if not problem[here]["outputFilePath"] == "" %}
-                            answer = String.raw`{{ other[problem[here]["outputFilePath"]]["value"] }}`;
-                            {% endif %}
-
-                            // LFへ統一
-                            input = normalize_newlines_to_lf(input);
-                            answer = normalize_newlines_to_lf(answer);
-                            user_submission = normalize_newlines_to_lf(user_submission);
-
-                            {% if not problem[here]["judgeFilePath"] == "" %}
-                            const f = {{ other[problem[here]["judgeFilePath"]]["value"] }}
-                            const editable_element = document.getElementById("{{ here }}_judge_details");
-                            const ok = f(user_submission, input, answer, editable_element);
-                            {% else %}
-                            const ok = strict_match_ignore_trailing_newline(user_submission, answer);
-                            {% endif %}
-
-                            return ok;
-                        }
-                    });
-                });
-            </script>
     </body>
 </html>

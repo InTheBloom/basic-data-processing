@@ -222,16 +222,17 @@ binary -> textは<class 'bytes'>に対してdecodeメソッドをしてやれば
 各種チェックはちょっと仕組み化するにはシンドいのである程度のべた書きは許容する方向で。でかくなってきたらリファクタリング入れる。
 
 jinja2のテンプレートに渡すcontextは、other、problem、meta、here、baseURL、moduleのフィールドを持つ。
-hereはconfig.jsonのあるディレクトリパス
-baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/)
+hereはconfig.jsonのあるディレクトリのルートからの相対パス
+baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/など)
 other、problem、metaの各エントリは自分のパスを持つ
 
-- other : context[OTHER.value][(パス)] = {path: (パス), value: (内容)}
+- other : context[OTHER.value][(パス)] = {path: (パス、ファイル名含む), value: (内容)}
 - problem : context[PROBLEM.value][(パス)] = dict + {path: (パス)}
 - meta : context[META.value][(パス)] = dict + {path: (パス)}
 
 の形式に従う。
 それぞれpathは「そのファイルがあるディレクトリ」のルートからの相対パス。
+otherのみファイル名を含むことに注意。
 
 -> 大体実装した。
 次: モジュールの埋め込みを許可するようにする。方法はちょっと考える。
@@ -239,3 +240,38 @@ other、problem、metaの各エントリは自分のパスを持つ
 moduleを使わない場合を考えてNoneも許容。
 
 -> moduleをある程度実装した
+
+===================小まとめ====================
+
+-> いろいろ修正してしまったので、今一度情報を残しておく。
+パスをキーや値にするとき、dictのキーに再利用するのとかが面倒なのでいちいちstrに変換している。
+
+# DirectoryTree
+指定ディレクトリ以下のディレクトリ構造を走査して、ある場所について、{(rootからの相対パス), [str]}という形式で持つ。
+build_fromを呼ぶと指定ディレクトリ以下にその構造を再現し、幅優先順にすべてのディレクトリのリストを返却
+
+# FileScanner
+指定ディレクトリ以下のすべてのファイルを走査して、内容をチェックする。
+config.jsonは各値のチェックをして、パス正規化してjson化し、{config.jsonのあるルートからの相対パス: json}のdictを返却
+
+それ以外はotherに分類。{ルートからの「ファイル名を含めた」相対パス: 内容バイナリ}のdictを返却
+get_informationを呼ぶとこれらをもらえる。
+
+# FileBuilder
+これらからjinja2に渡すcontextを作成して、jinja2を用いてレンダリングする。
+other -> そのまま構築する。
+
+contextは次のような形式
+other、problem、meta、here、baseURL、moduleのフィールドを持つ。
+hereはconfig.jsonのあるディレクトリのルートからの相対パス
+baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/など)
+other、problem、metaの各エントリは自分のパスを持つ
+
+- other : context[OTHER.value][(パス(ファイル名含む))] = {path: (パス(ファイル名含む)、ファイル名含む), value: (内容)}
+- problem : context[PROBLEM.value][(パス)] = dict + {path: (パス)}
+- meta : context[META.value][(パス)] = dict + {path: (パス)}
+- module : context[module][(モジュールルートからの相対パス)]
+
+の形式に従う。
+それぞれpathは「そのファイルがあるディレクトリ」のルートからの相対パス。
+otherのみファイル名を含むことに注意。

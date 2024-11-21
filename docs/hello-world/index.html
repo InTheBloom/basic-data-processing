@@ -37,9 +37,60 @@
         return true;
     }
 </script>
+
+        <!-- ジャッジスクリプト -->
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const form = document.getElementById("hello-world_input");
+                const sub_btn = document.getElementById("hello-world_submit");
+
+                sub_btn.addEventListener("click", () => {
+                    if (!is_file_selected(form)) {
+                        alert("提出ファイルが選択されていません。");
+                        return;
+                    }
+
+                    form.files[0].text().then((user_submission) => {
+                        const ok = check(user_submission);
+                        if (ok) {
+                            alert("正解！");
+                        }
+                        else {
+                            alert("不正解...");
+                        }
+                        form.value = "";
+                    });
+
+
+                    function check (user_submission) {
+                        let input = "";
+                        
+
+                        let answer = "";
+                        
+                        answer = String.raw`Hello World
+`;
+                        
+
+                        // LFへ統一
+                        input = normalize_newlines_to_lf(input);
+                        answer = normalize_newlines_to_lf(answer);
+                        user_submission = normalize_newlines_to_lf(user_submission);
+
+                        
+                        const ok = strict_match_ignore_trailing_newline(user_submission, answer);
+                        
+
+                        return ok;
+                    }
+                });
+            });
+        </script>
     </head>
 
     <body>
+        <p><a href="https://inthebloom.github.io/basic-data-processing/">トップページに戻る</a></p>
+
         <h1>Hello World!</h1>
         <h2>問題文</h2>
         <div><code>Hello World</code>と出力したファイルを作成してください。</div>
@@ -62,54 +113,5 @@
             <button id="hello-world_submit">提出</button>
             <p>ジャッジ詳細情報</p>
             <div id="hello-world_judge_details"></div>
-
-            <!-- ジャッジスクリプト -->
-            <script>
-                document.addEventListener("DOMContentLoaded", () => {
-                    const form = document.getElementById("hello-world_input");
-                    const sub_btn = document.getElementById("hello-world_submit");
-
-                    sub_btn.addEventListener("click", () => {
-                        if (!is_file_selected(form)) {
-                            alert("提出ファイルが選択されていません。");
-                            return;
-                        }
-
-                        form.files[0].text().then((user_submission) => {
-                            const ok = check(user_submission);
-                            if (ok) {
-                                alert("正解！");
-                            }
-                            else {
-                                alert("不正解...");
-                            }
-                            form.value = "";
-                        });
-
-
-                        function check (user_submission) {
-                            let input = "";
-                            
-
-                            let answer = "";
-                            
-                            answer = String.raw`Hello World
-`;
-                            
-
-                            // LFへ統一
-                            input = normalize_newlines_to_lf(input);
-                            answer = normalize_newlines_to_lf(answer);
-                            user_submission = normalize_newlines_to_lf(user_submission);
-
-                            
-                            const ok = strict_match_ignore_trailing_newline(user_submission, answer);
-                            
-
-                            return ok;
-                        }
-                    });
-                });
-            </script>
     </body>
 </html>
