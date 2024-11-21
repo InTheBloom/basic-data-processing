@@ -121,13 +121,14 @@ class FileScanner:
         meta = {}
         other = {}
 
+        # チェックをかけて、辞書に追加
         for path, val in files.items():
             if path.name == FileName.CONFIG.value:
                 t = self._check_config(path, rootdir, files)
                 if t == FileType.PROBLEM.value:
-                    problem[path] = val
+                    problem[path.parent] = val
                 if t == FileType.META.value:
-                    meta[path] = val
+                    meta[path.parent] = val
                 continue
             other[path] = val
         return (problem, meta, other)

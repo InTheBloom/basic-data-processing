@@ -14,7 +14,7 @@ class FileBuilder:
         self.meta = meta
         self.other = other
 
-    def build_from (self, rootdir, env):
+    def build_from (self, rootdir, baseURL, env):
         if not isinstance(rootdir, Path):
             raise Exception(f"{rootdir} is not Path.")
         if not rootdir.exists():
@@ -22,14 +22,21 @@ class FileBuilder:
         if not rootdir.is_dir():
             raise Exception(f"{rootdir} is not directory.")
 
+        if not isinstance(baseURL, str):
+            raise Exception(f"{baseURL} is not str.")
+
         if not isinstance(env, Environment):
             raise Exception(f"{env} is not jinja2.environment.Environment")
 
+        if len(baseURL) == 0 or not baseURL[-1] == "/":
+            baseURL += "/"
+
         rootdir = rootdir.resolve()
 
-        # 辞書の構築
+        # 辞書の構築(特殊フィールドの追加も含めて)
         from builder_utils.constants import FileType
         context = {}
+        context["baseURL"] = baseURL
         for v in FileType:
             context[v.value] = {}
 
@@ -40,9 +47,12 @@ class FileBuilder:
         for entry, binary in self.meta.items():
             json_content = json.loads(binary.decode())
             context[FileType.META.value][entry] = json_content
+            context[FileType.META.value][entry]["path"] = entry
+
         for entry, binary in self.problem.items():
             json_content = json.loads(binary.decode())
             context[FileType.PROBLEM.value][entry] = json_content
+            context[FileType.PROBLEM.value][entry]["path"] = entry
 
         # otherの構築
         for entry, binary in self.other.items():
@@ -64,7 +74,7 @@ class FileBuilder:
                 raise Exception(f"Failed get template {context[FileType.META.value][entry]['templateFileName']}\nError: {e}")
             except TemplateAssertionError as e:
                 raise Exception(f"There's an issue with the template {context[FileType.META.value][entry]['templateFileName']}\nError: {e}")
-            rootdir.joinpath(entry).parent.joinpath("index.html").write_text(
+            rootdir.joinpath(entry).joinpath("index.html").write_text(
                     template.render(context), encoding = "utf-8"
                     )
 
@@ -79,6 +89,6 @@ class FileBuilder:
                 raise Exception(f"Failed get template {context[FileType.PROBLEM.value][entry]['templateFileName']}\nError: {e}")
             except TemplateAssertionError as e:
                 raise Exception(f"There's an issue with the template {context[FileType.PROBLEM.value][entry]['templateFileName']}\nError: {e}")
-            rootdir.joinpath(entry).parent.joinpath("index.html").write_text(
+            rootdir.joinpath(entry).joinpath("index.html").write_text(
                     template.render(context), encoding = "utf-8"
                     )
