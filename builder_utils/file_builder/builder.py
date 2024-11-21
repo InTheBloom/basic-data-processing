@@ -39,7 +39,8 @@ class FileBuilder:
         if len(baseURL) == 0 or not baseURL[-1] == "/":
             baseURL += "/"
 
-        module_dir = module_dir.resolve()
+        if not module_dir is None:
+            module_dir = module_dir.resolve()
         rootdir = rootdir.resolve()
 
         # 辞書の構築(特殊フィールドの追加も含めて)
@@ -82,14 +83,11 @@ class FileBuilder:
                         context["module"][str(entry.relative_to(module_dir))] = template.render()
         load_all_module()
 
-        import json
-        for entry, binary in self.meta.items():
-            json_content = json.loads(binary.decode())
+        for entry, json_content in self.meta.items():
             context[FileType.META.value][str(entry)] = json_content
             context[FileType.META.value][str(entry)]["path"] = str(entry)
 
-        for entry, binary in self.problem.items():
-            json_content = json.loads(binary.decode())
+        for entry, json_content in self.problem.items():
             context[FileType.PROBLEM.value][str(entry)] = json_content
             context[FileType.PROBLEM.value][str(entry)]["path"] = str(entry)
 
@@ -115,7 +113,7 @@ class FileBuilder:
 
         # problemを生成
         for entry in self.problem.keys():
-            context["here"] = entry
+            context["here"] = str(entry)
             try:
                 template = env.get_template(
                         context[FileType.PROBLEM.value][str(entry)]["templateFileName"]

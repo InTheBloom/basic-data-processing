@@ -30,7 +30,7 @@ class FileScanner:
                     q.put(entry)
         return files
 
-    def _check_config (self, path, rootdir, files):
+    def _check_config_and_normalize_json (self, path, rootdir, files):
         from builder_utils.constants import (
                 FileType,
                 RequiredJsonKeysCommon,
@@ -62,7 +62,7 @@ class FileScanner:
         if json_contents["fileType"] == FileType.META.value:
             self._check_meta_config(json_contents, path, rootdir, files)
 
-        return json_contents["fileType"]
+        return json_contents
 
     def _check_problem_config (self, json_contents, path, rootdir, files):
         from builder_utils.constants import RequiredJsonKeysProblem
@@ -83,18 +83,21 @@ class FileScanner:
 
             p = Path(json_contents[s])
             if p.is_absolute():
-                np = rootdir.joinpath(p)
+                np = rootdir.joinpath(p).resolve()
                 if not np.exists():
                     raise Exception(f"{p} doesn't exist.")
                 if not np.is_file():
                     raise Exception(f"{p} is not file.")
-                # 相対パスに直す
-                json_contents[s] = np.relative_to(path.parent)
+                # 相対パスに直す。
+                json_contents[s] = np.relative_to(rootdir)
                 return
-            if not p.exists():
-                raise Exception(f"{p} doesn't exist.")
-            if not p.is_file():
-                raise Exception(f"{p} is not file.")
+            # pathはそのファイルのrootdirからの相対パスなことに注意。
+            np = rootdir.joinpath(path.parent.joinpath(p)).resolve()
+            if not np.exists():
+                raise Exception(f"{np} doesn't exist.")
+            if not np.is_file():
+                raise Exception(f"{np} is not file.")
+            json_contents[s] = str(np.relative_to(rootdir))
 
         # inputFilePath
         # outputFilePath
@@ -124,11 +127,11 @@ class FileScanner:
         # チェックをかけて、辞書に追加
         for path, val in files.items():
             if path.name == FileName.CONFIG.value:
-                t = self._check_config(path, rootdir, files)
-                if t == FileType.PROBLEM.value:
-                    problem[path.parent] = val
-                if t == FileType.META.value:
-                    meta[path.parent] = val
+                json_content = self._check_config_and_normalize_json(path, rootdir, files)
+                if json_content["fileType"] == FileType.PROBLEM.value:
+                    problem[path.parent] = json_content
+                if json_content["fileType"] == FileType.META.value:
+                    meta[path.parent] = json_content
                 continue
             other[path] = val
         return (problem, meta, other)

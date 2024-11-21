@@ -18,10 +18,10 @@ st_handler.setFormatter(Formatter('[%(levelname)s] %(asctime)s :In function %(fu
 logger.addHandler(st_handler)
 
 # 定数
-RESOURCE_DIR = "tests/root"
-TEMPLATE_DIR = "tests/templates"
-MODULE_DIR = "tests/templates/modules"
-TARGET_DIR = "tests/target"
+RESOURCE_DIR = "resources/root"
+TEMPLATE_DIR = "resources/templates"
+MODULE_DIR = "resources/templates/modules"
+TARGET_DIR = "docs"
 BASEURL = "/"
 
 def jinja_init (directory):
@@ -44,8 +44,10 @@ def main ():
     # jinjaの初期化
     logger.info("jinja2 initialization.")
     template_dir = current_dir.joinpath(TEMPLATE_DIR)
-    module_dir = current_dir.joinpath(MODULE_DIR)
     env = jinja_init(template_dir)
+
+    # Noneの可能性もあるので気を付ける。
+    module_dir = None if MODULE_DIR is None else current_dir.joinpath(MODULE_DIR)
 
     resource_dir = current_dir.joinpath(RESOURCE_DIR)
     target_dir = current_dir.joinpath(TARGET_DIR)
