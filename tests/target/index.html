@@ -1,11 +1,15 @@
 this is basic template
 
-problem is {WindowsPath('.'): {'fileType': 'problem', 'templateFileName': 'basic.html', 'title': 'hello', 'problemStatement': 'hello worldを出力してください。', 'inputDescription': '入力の説明', 'inputFilePath': '', 'outputDescription': '出力の説明', 'outputFilePath': '', 'moreInformation': '追加情報', 'judgeFilePath': '', 'path': WindowsPath('.')}}
+problem is {'.': {'fileType': 'problem', 'templateFileName': 'basic.html', 'title': 'p1', 'problemTitle': 'HELLO WORLD', 'problemStatement': 'hello worldを出力してください。', 'inputDescription': '入力の説明', 'inputFilePath': '', 'outputDescription': '出力の説明', 'outputFilePath': '', 'moreInformation': '追加情報', 'judgeFilePath': '', 'path': '.'}}
 
-meta is {WindowsPath('fuga'): {'fileType': 'meta', 'templateFileName': 'special.html', 'path': WindowsPath('fuga')}}
+meta is {'fuga': {'fileType': 'meta', 'templateFileName': 'special.html', 'title': 'hogetitle', 'path': 'fuga'}}
 
-other is {WindowsPath('fuga'): {'fileType': 'meta', 'templateFileName': 'special.html', 'path': WindowsPath('fuga')}}
+other is {'fuga': {'fileType': 'meta', 'templateFileName': 'special.html', 'title': 'hogetitle', 'path': 'fuga'}}
 
 here is .
 
 baseURL is /
+
+function this_is_script () {
+    console.log("Hello World!");
+}

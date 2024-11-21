@@ -12,10 +12,11 @@ class FileType (Enum):
 RequiredJsonKeysCommon = {
     "fileType" : str,
     "templateFileName": str,
+    "title": str,
 }
 
 RequiredJsonKeysProblem = {
-    "title" : str,
+    "problemTitle": str,
     "problemStatement": str,
     "inputDescription": str,
     "inputFilePath": str,

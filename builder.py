@@ -20,21 +20,21 @@ logger.addHandler(st_handler)
 # 定数
 RESOURCE_DIR = "tests/root"
 TEMPLATE_DIR = "tests/templates"
+MODULE_DIR = "tests/templates/modules"
 TARGET_DIR = "tests/target"
 BASEURL = "/"
 
-def jinja_init (template_dir):
+def jinja_init (directory):
     from jinja2 import Environment, FileSystemLoader
-    assert(isinstance(template_dir, pathlib.Path))
-    logger.info(f"Trying to find html template directory {template_dir}")
+    assert(isinstance(directory, pathlib.Path))
+    logger.info(f"Trying to find jinja2 template from {directory}")
 
-    if not template_dir.exists():
-        raise Exception(f"{template_dir} is not found.")
-    if not template_dir.is_dir():
-        raise Exception(f"{template_dir} must be a directory.")
+    if not directory.exists():
+        raise Exception(f"{directory} is not found.")
+    if not directory.is_dir():
+        raise Exception(f"{directory} must be a directory.")
 
-    global jinja_env
-    jinja_env = Environment(loader = FileSystemLoader(template_dir))
+    return Environment(loader = FileSystemLoader(directory))
 
 def main ():
     current_dir = pathlib.Path.cwd()
@@ -44,7 +44,8 @@ def main ():
     # jinjaの初期化
     logger.info("jinja2 initialization.")
     template_dir = current_dir.joinpath(TEMPLATE_DIR)
-    jinja_init(template_dir)
+    module_dir = current_dir.joinpath(MODULE_DIR)
+    env = jinja_init(template_dir)
 
     resource_dir = current_dir.joinpath(RESOURCE_DIR)
     target_dir = current_dir.joinpath(TARGET_DIR)
@@ -64,7 +65,7 @@ def main ():
     logger.info(f"Preparing for file generation.")
     file_builder = FileBuilder(problem, meta, other)
     logger.info(f"Start generating files from {target_dir}")
-    file_builder.build_from(target_dir, BASEURL, jinja_env)
+    file_builder.build_from(target_dir, BASEURL, env, module_dir)
 
 if __name__ == "__main__":
     main()

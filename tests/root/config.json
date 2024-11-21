@@ -1,7 +1,8 @@
 {
     "fileType" : "problem",
     "templateFileName" : "basic.html",
-    "title" : "hello",
+    "title" : "p1",
+    "problemTitle" : "HELLO WORLD",
     "problemStatement" : "hello worldを出力してください。",
     "inputDescription" : "入力の説明",
     "inputFilePath" : "",

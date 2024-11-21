@@ -188,9 +188,10 @@ JSON(ファイル名はconfig.jsonのみ許容)に必須な属性の定義
 # common
 - fileType: "problem"|"meta"
 - templateFileName: str
+- title: str
 
 # problem
-- title: str
+- problemTitle: str
 - problemStatement: str
 - inputDescription: str
 - inputFilePath: str
@@ -202,8 +203,10 @@ JSON(ファイル名はconfig.jsonのみ許容)に必須な属性の定義
 # meta
 -
 
-# 暗黙に定義されるもの
-- Path: str
+# 辞書へ変換された際に暗黙に定義されるもの
+- path: str
+- baseURL: str
+- module: [str]
 
 追記: templateに関する設定をバリデーションしようとするとそのあたりの情報も拾ってこないといけない。一旦保留。
 
@@ -218,16 +221,21 @@ binary -> textは<class 'bytes'>に対してdecodeメソッドをしてやれば
 
 各種チェックはちょっと仕組み化するにはシンドいのである程度のべた書きは許容する方向で。でかくなってきたらリファクタリング入れる。
 
-jinja2のテンプレートに渡すcontextは、other、problem、meta、here、baseURLのフィールドを持つ。
+jinja2のテンプレートに渡すcontextは、other、problem、meta、here、baseURL、moduleのフィールドを持つ。
 hereはconfig.jsonのパスを渡す。
 baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/)
 other、problem、metaの各エントリは自分のパスを持つ
 
-- other : {path: val}の形式
-- problem : {path: dict}の形式
-- meta : {path: dict}の形式
+- other : context[OTHER.value][(パス)] = {path: (パス), value: (内容)}
+- problem : context[PROBLEM.value][(パス)] = dict + {path: (パス)}
+- meta : context[META.value][(パス)] = dict + {path: (パス)}
 
+の形式に従う。
 それぞれpathはルートからの相対パス。
 
 -> 大体実装した。
 次: モジュールの埋め込みを許可するようにする。方法はちょっと考える。
+-> modulepathみたいな定数を使って、あるディレクトリ以下のテンプレートをレンダリングしたものを辞書にぶち込んで利用できるようにする。
+moduleを使わない場合を考えてNoneも許容。
+
+-> moduleをある程度実装した

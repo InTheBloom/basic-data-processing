@@ -1,4 +1,5 @@
 {
     "fileType" : "meta",
-    "templateFileName" : "special.html"
+    "templateFileName" : "special.html",
+    "title" : "hogetitle"
 }
