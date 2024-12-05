@@ -66,7 +66,7 @@
 |----------------|----------------------------------------------------------------------|
 | `here`         | `config.json`のある`/resources/root`からの相対ファイルパス           |
 | `baseURL`      | 末尾のセパレータを含まないデプロイ先ディレクトリルート               |
-| `other`        | `context[other][(パス)] = {path: パス, value: バイナリオブジェクト}` |
+| `other`        | `context[other][(パス)] = {path: パス, value: utf-8文字列(パースエラーが発生した場合は利用不可)}` |
 | `problem`      | `context[problem][(パス)] = config.jsonのオブジェクト + {path: パス}`|
 | `meta`         | `context[meta][(パス)] = config.jsonのオブジェクト + {path: パス}`   |
 | `module`       | `context[module][モジュールの相対パス] = モジュール文字列`           |

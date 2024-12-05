@@ -59,7 +59,10 @@ class FileBuilder:
 
         for entry, binary in self.other.items():
             context[FileType.OTHER.value][str(entry)] = {}
-            context[FileType.OTHER.value][str(entry)]["value"] = binary
+            try:
+                context[FileType.OTHER.value][str(entry)]["value"] = binary.decode(encoding="utf-8", errors="strict")
+            except Exception as e:
+                context[FileType.OTHER.value][str(entry)]["value"] = "This file cannot parse as utf-8 string."
             context[FileType.OTHER.value][str(entry)]["path"] = str(entry)
 
         def load_all_module ():
