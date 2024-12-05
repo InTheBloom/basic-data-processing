@@ -34,7 +34,7 @@
 
 | フィールド名            | 型                   |
 |-------------------------|----------------------|
-| `fileType`             | `"problem"|"meta"`   |
+| `fileType`             | `str` (`"problem"\|"meta"`)   |
 | `templateFileName`     | `str`                |
 | `title`                | `str`                |
 
@@ -51,7 +51,7 @@
 | `outputFilePath`        | `str`                  |
 | `moreInformation`       | `str`                  |
 | `judgeFilePath`         | `str`                  |
-| `examples`              | `list` (内容はユーザ定義可能です。例: `{input, output, description}`形式) |
+| `examples`              | `list` (内容はユーザ定義可能です。例: `{input, output, description}`) |
 
 - `fileType`が`meta`
 
