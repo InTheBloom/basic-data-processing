@@ -31,6 +31,7 @@
 `config.json`は次の要求を満たす必要があります。
 
 - すべての`config.json`で共通
+
 | フィールド名             | 型                     |
 |--------------------------|------------------------|
 | `problemTitle`          | `str`                  |
@@ -45,10 +46,10 @@
 | `examples`              | `list` (内容はユーザ定義可能です。例: `{input, output, description}`形式) |
 
 - `fileType`が`meta`
+
 | フィールド名 | 型 |
 |--------------|----|
 | なし         | -  |
-
 
 必須属性以外はユーザが自由に定義可能です。
 これらの情報を次の形でパックした辞書`context`をjinja2のテンプレート構築時に使用します。
@@ -62,8 +63,11 @@
 | `meta`         | `context[meta][(パス)] = config.jsonのオブジェクト + {path: パス}`   |
 | `module`       | `context[module][モジュールの相対パス] = モジュール文字列`           |
 
+ここで、パスは基本的にそのファイルまたは`config.json`のあるディレクトリの`resources/root`からの相対パスになります。`here`と同じ形式です。
+
 ユーザは、`resources/templates`の通常テンプレートのなかで`context`変数を使用することができます。
-例えば、`problemTitle`を取得するとき、`{{ problem[here][problemTitle] }}`とします。
+例えば、`problemTitle`を取得するとき、`{{ problem[here]["problemTitle"] }}`とします。
+出力ファイルのバイナリを利用したいときは、`{{ other[problem[here]["outputFilePath"]]["value"] }}`とすればよいです。
 
 # License
 MIT
