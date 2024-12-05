@@ -32,6 +32,14 @@
 
 - すべての`config.json`で共通
 
+| フィールド名            | 型                   |
+|-------------------------|----------------------|
+| `fileType`             | `"problem"|"meta"`   |
+| `templateFileName`     | `str`                |
+| `title`                | `str`                |
+
+- `fileType`が`problem`
+
 | フィールド名             | 型                     |
 |--------------------------|------------------------|
 | `problemTitle`          | `str`                  |
