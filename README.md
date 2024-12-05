@@ -7,8 +7,7 @@
 - 完全一致ジャッジをデフォルトでサポート。より複雑なジャッジも`judge.js`を用意することで対応できます。
 - すべて静的ファイルとして生成されます。
 
-## 使用方法
-2024-12-06版
+## 簡易ドキュメント(2024-12-06版)
 スクリプトの起動はカレントワーキングディレクトリを起点とします。以後、`/`は実行したディレクトリを指します。
 
 ### 用語の定義
@@ -32,35 +31,36 @@
 `config.json`は次の要求を満たす必要があります。
 
 - すべての`config.json`で共通
-| `fileType` | `"problem"|"meta"` |
-| `templateFileName` | `str` |
-| `title`| `str` |
-
-- `fileType`が`problem`
-| `problemTitle` | `str` |
-| `problemId` | `str`(uuidなどを想定。衝突判定はしていないです。) |
-| `problemStatement` | `str` |
-| `inputDescription` | `str` |
-| `inputFilePath` | `str` |
-| `outputDescription` | `str` |
-| `outputFilePath` | `str` |
-| `moreInformation` | `str` |
-| `judgeFilePath` | `str` |
-| `examples` | `list`(listの中身のバリデーションをしてません。現状`{"input": str, "output": str, "description": str}`で運用しています。) |
+| フィールド名             | 型                     |
+|--------------------------|------------------------|
+| `problemTitle`          | `str`                  |
+| `problemId`             | `str` (UUIDなどを想定) |
+| `problemStatement`      | `str`                  |
+| `inputDescription`      | `str`                  |
+| `inputFilePath`         | `str`                  |
+| `outputDescription`     | `str`                  |
+| `outputFilePath`        | `str`                  |
+| `moreInformation`       | `str`                  |
+| `judgeFilePath`         | `str`                  |
+| `examples`              | `list` (内容はユーザ定義可能です。例: `{input, output, description}`形式) |
 
 - `fileType`が`meta`
-| なし |
+| フィールド名 | 型 |
+|--------------|----|
+| なし         | -  |
+
 
 必須属性以外はユーザが自由に定義可能です。
 これらの情報を次の形でパックした辞書`context`をjinja2のテンプレート構築時に使用します。
 
-`other`、`problem`、`meta`、`here`、`baseURL`、`module`のフィールドを持つ。
-| `here` | `config.json`のある`/resources/root`からの相対ファイルパス |
-| `baseURL` | 末尾のセパレータを含まないデプロイ先のディレクトリルート(https://aaa/bbbなど。`builder.py`で定義されています。) |
-| `other` | `context[other][(パス(ファイル名含む))]` = `{path: (パス(ファイル名含む)), value: (バイナリオブジェクト)}` |
-| `problem` | `context[problem][(パス)]` = `(config.jsonで定義したオブジェクト) + {path: (パス)}` |
-| `meta` | `context[meta][(パス)]` = `(config.fsonで定義したオブジェクト) + {path: (パス)}` |
-| `module` | `context[module][(モジュールルートからの相対パス)]` = `モジュール文字列` |
+| フィールド名   | 内容                                                                 |
+|----------------|----------------------------------------------------------------------|
+| `here`         | `config.json`のある`/resources/root`からの相対ファイルパス           |
+| `baseURL`      | 末尾のセパレータを含まないデプロイ先ディレクトリルート               |
+| `other`        | `context[other][(パス)] = {path: パス, value: バイナリオブジェクト}` |
+| `problem`      | `context[problem][(パス)] = config.jsonのオブジェクト + {path: パス}`|
+| `meta`         | `context[meta][(パス)] = config.jsonのオブジェクト + {path: パス}`   |
+| `module`       | `context[module][モジュールの相対パス] = モジュール文字列`           |
 
 ユーザは、`resources/templates`の通常テンプレートのなかで`context`変数を使用することができます。
 例えば、`problemTitle`を取得するとき、`{{ problem[here][problemTitle] }}`とします。
