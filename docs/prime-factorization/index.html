@@ -7,6 +7,96 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Prime Factorization</title>
 
+        <style>
+            /* 全体のスタイリング */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                line-height: 1.6;
+                background-color: #f4fff4;
+                color: #333;
+            }
+
+            /* メニューのスタイリング */
+            nav.custom-menu {
+                background-color: #4CAF50;
+                color: #fff;
+                text-align: center;
+                padding: 10px 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            nav.custom-menu a {
+                color: #fff;
+                text-decoration: none;
+                margin: 0 15px;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+
+            nav.custom-menu a:hover {
+                text-decoration: underline;
+            }
+
+            /* メインコンテンツ */
+            main {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            h1 {
+                color: #4CAF50;
+                font-size: 1.8em;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                color: #4CAF50;
+                border-bottom: 2px solid #4CAF50;
+                padding-bottom: 5px;
+                margin-top: 30px;
+            }
+
+            section {
+                margin-bottom: 20px;
+            }
+
+            button {
+                background: #4CAF50;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background: #3e8e41;
+            }
+
+            .file-input {
+                margin-bottom: 15px;
+            }
+
+            .judge-details {
+                margin-top: 20px;
+                padding: 10px;
+                background: #f0fff0;
+                border: 1px solid #4CAF50;
+                border-radius: 5px;
+                min-height: 100px;
+                font-size: 0.9em;
+                color: #555;
+                overflow: auto;
+            }
+        </style>
+
         <script>
     // utilities
     function strict_match_ignore_trailing_newline (S, T) {
@@ -61,627 +151,15 @@
                         form.value = "";
                     });
 
-
                     function check (user_submission) {
                         let input = "";
                         
-                        input = String.raw`200
-169
-952
-30
-617
-188
-9
-859
-57
-307
-855
-473
-154
-400
-309
-184
-203
-688
-774
-249
-900
-761
-750
-225
-136
-881
-433
-327
-573
-160
-375
-979
-578
-693
-173
-882
-428
-899
-37
-437
-625
-916
-224
-292
-73
-601
-453
-978
-849
-792
-180
-42
-969
-101
-980
-941
-849
-682
-542
-695
-472
-932
-505
-357
-501
-826
-233
-814
-632
-960
-665
-239
-483
-995
-19
-397
-562
-346
-743
-488
-850
-635
-263
-861
-107
-763
-968
-791
-377
-64
-565
-997
-729
-178
-983
-328
-929
-942
-504
-386
-739
-704
-846
-82
-763
-330
-660
-877
-852
-288
-173
-892
-399
-134
-532
-149
-373
-503
-598
-217
-915
-519
-335
-884
-98
-152
-642
-946
-686
-520
-595
-557
-486
-528
-633
-173
-359
-90
-648
-844
-292
-626
-62
-284
-329
-771
-181
-242
-777
-782
-831
-147
-848
-130
-651
-870
-684
-551
-587
-739
-402
-113
-244
-925
-90
-101
-325
-333
-130
-859
-773
-28
-855
-476
-40
-400
-448
-478
-427
-609
-373
-818
-975
-708
-163
-993
-939
-851
-863
-472
-852
-384
-53
-295
-716
-499
-403
-918
-321
-367
-733
-`;
+                        input = String.raw`b'200\n169\n952\n30\n617\n188\n9\n859\n57\n307\n855\n473\n154\n400\n309\n184\n203\n688\n774\n249\n900\n761\n750\n225\n136\n881\n433\n327\n573\n160\n375\n979\n578\n693\n173\n882\n428\n899\n37\n437\n625\n916\n224\n292\n73\n601\n453\n978\n849\n792\n180\n42\n969\n101\n980\n941\n849\n682\n542\n695\n472\n932\n505\n357\n501\n826\n233\n814\n632\n960\n665\n239\n483\n995\n19\n397\n562\n346\n743\n488\n850\n635\n263\n861\n107\n763\n968\n791\n377\n64\n565\n997\n729\n178\n983\n328\n929\n942\n504\n386\n739\n704\n846\n82\n763\n330\n660\n877\n852\n288\n173\n892\n399\n134\n532\n149\n373\n503\n598\n217\n915\n519\n335\n884\n98\n152\n642\n946\n686\n520\n595\n557\n486\n528\n633\n173\n359\n90\n648\n844\n292\n626\n62\n284\n329\n771\n181\n242\n777\n782\n831\n147\n848\n130\n651\n870\n684\n551\n587\n739\n402\n113\n244\n925\n90\n101\n325\n333\n130\n859\n773\n28\n855\n476\n40\n400\n448\n478\n427\n609\n373\n818\n975\n708\n163\n993\n939\n851\n863\n472\n852\n384\n53\n295\n716\n499\n403\n918\n321\n367\n733\n'`;
                         
 
                         let answer = "";
                         
-                        answer = String.raw`13 13
-2 2 2
-7
-17
-2
-3
-5
-617
-2 2
-47
-3 3
-859
-3
-19
-307
-3 3
-5
-19
-11
-43
-2
-7
-11
-2 2 2 2
-5 5
-3
-103
-2 2 2
-23
-7
-29
-2 2 2 2
-43
-2
-3 3
-43
-3
-83
-2 2
-3 3
-5 5
-761
-2
-3
-5 5 5
-3 3
-5 5
-2 2 2
-17
-881
-433
-3
-109
-3
-191
-2 2 2 2 2
-5
-3
-5 5 5
-11
-89
-2
-17 17
-3 3
-7
-11
-173
-2
-3 3
-7 7
-2 2
-107
-29
-31
-37
-19
-23
-5 5 5 5
-2 2
-229
-2 2 2 2 2
-7
-2 2
-73
-73
-601
-3
-151
-2
-3
-163
-3
-283
-2 2 2
-3 3
-11
-2 2
-3 3
-5
-2
-3
-7
-3
-17
-19
-101
-2 2
-5
-7 7
-941
-3
-283
-2
-11
-31
-2
-271
-5
-139
-2 2 2
-59
-2 2
-233
-5
-101
-3
-7
-17
-3
-167
-2
-7
-59
-233
-2
-11
-37
-2 2 2
-79
-2 2 2 2 2 2
-3
-5
-5
-7
-19
-239
-3
-7
-23
-5
-199
-19
-397
-2
-281
-2
-173
-743
-2 2 2
-61
-2
-5 5
-17
-5
-127
-263
-3
-7
-41
-107
-7
-109
-2 2 2
-11 11
-7
-113
-13
-29
-2 2 2 2 2 2
-5
-113
-997
-3 3 3 3 3 3
-2
-89
-983
-2 2 2
-41
-929
-2
-3
-157
-2 2 2
-3 3
-7
-2
-193
-739
-2 2 2 2 2 2
-11
-2
-3 3
-47
-2
-41
-7
-109
-2
-3
-5
-11
-2 2
-3
-5
-11
-877
-2 2
-3
-71
-2 2 2 2 2
-3 3
-173
-2 2
-223
-3
-7
-19
-2
-67
-2 2
-7
-19
-149
-373
-503
-2
-13
-23
-7
-31
-3
-5
-61
-3
-173
-5
-67
-2 2
-13
-17
-2
-7 7
-2 2 2
-19
-2
-3
-107
-2
-11
-43
-2
-7 7 7
-2 2 2
-5
-13
-5
-7
-17
-557
-2
-3 3 3 3 3
-2 2 2 2
-3
-11
-3
-211
-173
-359
-2
-3 3
-5
-2 2 2
-3 3 3 3
-2 2
-211
-2 2
-73
-2
-313
-2
-31
-2 2
-71
-7
-47
-3
-257
-181
-2
-11 11
-3
-7
-37
-2
-17
-23
-3
-277
-3
-7 7
-2 2 2 2
-53
-2
-5
-13
-3
-7
-31
-2
-3
-5
-29
-2 2
-3 3
-19
-19
-29
-587
-739
-2
-3
-67
-113
-2 2
-61
-5 5
-37
-2
-3 3
-5
-101
-5 5
-13
-3 3
-37
-2
-5
-13
-859
-773
-2 2
-7
-3 3
-5
-19
-2 2
-7
-17
-2 2 2
-5
-2 2 2 2
-5 5
-2 2 2 2 2 2
-7
-2
-239
-7
-61
-3
-7
-29
-373
-2
-409
-3
-5 5
-13
-2 2
-3
-59
-163
-3
-331
-3
-313
-23
-37
-863
-2 2 2
-59
-2 2
-3
-71
-2 2 2 2 2 2 2
-3
-53
-5
-59
-2 2
-179
-499
-13
-31
-2
-3 3 3
-17
-3
-107
-367
-733
-`;
+                        answer = String.raw`b'13 13\n2 2 2\n7\n17\n2\n3\n5\n617\n2 2\n47\n3 3\n859\n3\n19\n307\n3 3\n5\n19\n11\n43\n2\n7\n11\n2 2 2 2\n5 5\n3\n103\n2 2 2\n23\n7\n29\n2 2 2 2\n43\n2\n3 3\n43\n3\n83\n2 2\n3 3\n5 5\n761\n2\n3\n5 5 5\n3 3\n5 5\n2 2 2\n17\n881\n433\n3\n109\n3\n191\n2 2 2 2 2\n5\n3\n5 5 5\n11\n89\n2\n17 17\n3 3\n7\n11\n173\n2\n3 3\n7 7\n2 2\n107\n29\n31\n37\n19\n23\n5 5 5 5\n2 2\n229\n2 2 2 2 2\n7\n2 2\n73\n73\n601\n3\n151\n2\n3\n163\n3\n283\n2 2 2\n3 3\n11\n2 2\n3 3\n5\n2\n3\n7\n3\n17\n19\n101\n2 2\n5\n7 7\n941\n3\n283\n2\n11\n31\n2\n271\n5\n139\n2 2 2\n59\n2 2\n233\n5\n101\n3\n7\n17\n3\n167\n2\n7\n59\n233\n2\n11\n37\n2 2 2\n79\n2 2 2 2 2 2\n3\n5\n5\n7\n19\n239\n3\n7\n23\n5\n199\n19\n397\n2\n281\n2\n173\n743\n2 2 2\n61\n2\n5 5\n17\n5\n127\n263\n3\n7\n41\n107\n7\n109\n2 2 2\n11 11\n7\n113\n13\n29\n2 2 2 2 2 2\n5\n113\n997\n3 3 3 3 3 3\n2\n89\n983\n2 2 2\n41\n929\n2\n3\n157\n2 2 2\n3 3\n7\n2\n193\n739\n2 2 2 2 2 2\n11\n2\n3 3\n47\n2\n41\n7\n109\n2\n3\n5\n11\n2 2\n3\n5\n11\n877\n2 2\n3\n71\n2 2 2 2 2\n3 3\n173\n2 2\n223\n3\n7\n19\n2\n67\n2 2\n7\n19\n149\n373\n503\n2\n13\n23\n7\n31\n3\n5\n61\n3\n173\n5\n67\n2 2\n13\n17\n2\n7 7\n2 2 2\n19\n2\n3\n107\n2\n11\n43\n2\n7 7 7\n2 2 2\n5\n13\n5\n7\n17\n557\n2\n3 3 3 3 3\n2 2 2 2\n3\n11\n3\n211\n173\n359\n2\n3 3\n5\n2 2 2\n3 3 3 3\n2 2\n211\n2 2\n73\n2\n313\n2\n31\n2 2\n71\n7\n47\n3\n257\n181\n2\n11 11\n3\n7\n37\n2\n17\n23\n3\n277\n3\n7 7\n2 2 2 2\n53\n2\n5\n13\n3\n7\n31\n2\n3\n5\n29\n2 2\n3 3\n19\n19\n29\n587\n739\n2\n3\n67\n113\n2 2\n61\n5 5\n37\n2\n3 3\n5\n101\n5 5\n13\n3 3\n37\n2\n5\n13\n859\n773\n2 2\n7\n3 3\n5\n19\n2 2\n7\n17\n2 2 2\n5\n2 2 2 2\n5 5\n2 2 2 2 2 2\n7\n2\n239\n7\n61\n3\n7\n29\n373\n2\n409\n3\n5 5\n13\n2 2\n3\n59\n163\n3\n331\n3\n313\n23\n37\n863\n2 2 2\n59\n2 2\n3\n71\n2 2 2 2 2 2 2\n3\n53\n5\n59\n2 2\n179\n499\n13\n31\n2\n3 3 3\n17\n3\n107\n367\n733\n'`;
                         
 
                         // LFへ統一
@@ -701,35 +179,55 @@
     </head>
 
     <body>
-        <p><a href="https://inthebloom.github.io/basic-data-processing/">トップページに戻る</a></p>
+        <nav class="custom-menu">
+            <a href="/">トップページに戻る</a>
+        </nav>
 
-        <h1>Prime Factorization</h1>
-        <h2>問題文</h2>
-        <div>整数Nが与えられます。Nを素因数分解してください。</div>
+        <main>
+            <h1>Prime Factorization</h1>
 
-        <h2>入力</h2>
-        <div>入力ファイルは次の形式です。<pre><code>T
+            <section>
+                <h2>問題文</h2>
+                <div>整数Nが与えられます。Nを素因数分解してください。</div>
+            </section>
+
+            <section>
+                <h2>入力</h2>
+                <div>入力ファイルは次の形式です。<pre><code>T
 N1
 N2
 ...
 NT</code></pre>Tは200以下、2以上Nは1000以下です。</div>
-        
-        <p><a href="https://inthebloom.github.io/basic-data-processing/prime-factorization\in.txt" download>入力ファイル</a></p>
-        
+                
+                <p><a href="/prime-factorization\in.txt" download>入力ファイル</a></p>
+                
+            </section>
 
-        <h2>出力</h2>
-        <div>T行出力してください。i行目にはNiを素因数分解した結果をNi = p1 * p2 * ... * pk (p1 <= p2 <= ... <= pk)とするとき、<pre><code>p1 p2 ... pk</code></pre>の形式で出力したファイルを作成してください。</div>
+            <section>
+                <h2>出力</h2>
+                <div>T行出力してください。i行目にはNiを素因数分解した結果をNi = p1 * p2 * ... * pk (p1 <= p2 <= ... <= pk)とするとき、<pre><code>p1 p2 ... pk</code></pre>の形式で出力したファイルを作成してください。</div>
+            </section>
 
-        
-        <h2>補足</h2>
-        <div>各行では、末尾の空白は許容されません。注意してください。</div>
-        
+            
+            <section>
+                <h2>補足</h2>
+                <div>各行では、末尾の空白は許容されません。注意してください。</div>
+            </section>
+            
 
-        <h2>提出</h2>
-            <label for="prime-factorization_fileinput"><p>提出ファイルを選択してください。</p></label>
-            <input type="file" id="prime-factorization_input" name="prime-factorization_fileinput">
-            <button id="prime-factorization_submit">提出</button>
-            <p>ジャッジ詳細情報</p>
-            <div id="prime-factorization_judge_details"></div>
+            <section>
+                <h2>提出</h2>
+                <div class="file-input">
+                    <label for="prime-factorization_fileinput"><p>提出ファイルを選択してください。</p></label>
+                    <input type="file" id="prime-factorization_input" name="prime-factorization_fileinput">
+                </div>
+                <button id="prime-factorization_submit">提出</button>
+            </section>
+
+            <section>
+                <h2>ジャッジの詳細情報</h2>
+                <div class="judge-details" id="prime-factorization_judge_details"></div>
+            </section>
+        </main>
     </body>
 </html>

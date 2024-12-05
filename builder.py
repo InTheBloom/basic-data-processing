@@ -22,7 +22,8 @@ RESOURCE_DIR = "resources/root"
 TEMPLATE_DIR = "resources/templates"
 MODULE_DIR = "resources/templates/modules"
 TARGET_DIR = "docs"
-BASEURL = "https://inthebloom.github.io/basic-data-processing/"
+BASEURL = "/"
+#BASEURL = "https://inthebloom.github.io/basic-data-processing/"
 
 def jinja_init (directory):
     from jinja2 import Environment, FileSystemLoader

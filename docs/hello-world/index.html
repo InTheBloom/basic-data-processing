@@ -7,6 +7,96 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hello World!</title>
 
+        <style>
+            /* 全体のスタイリング */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                line-height: 1.6;
+                background-color: #f4fff4;
+                color: #333;
+            }
+
+            /* メニューのスタイリング */
+            nav.custom-menu {
+                background-color: #4CAF50;
+                color: #fff;
+                text-align: center;
+                padding: 10px 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            nav.custom-menu a {
+                color: #fff;
+                text-decoration: none;
+                margin: 0 15px;
+                font-weight: bold;
+                font-size: 1.2em;
+            }
+
+            nav.custom-menu a:hover {
+                text-decoration: underline;
+            }
+
+            /* メインコンテンツ */
+            main {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background: #fff;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            h1 {
+                color: #4CAF50;
+                font-size: 1.8em;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            h2 {
+                color: #4CAF50;
+                border-bottom: 2px solid #4CAF50;
+                padding-bottom: 5px;
+                margin-top: 30px;
+            }
+
+            section {
+                margin-bottom: 20px;
+            }
+
+            button {
+                background: #4CAF50;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background: #3e8e41;
+            }
+
+            .file-input {
+                margin-bottom: 15px;
+            }
+
+            .judge-details {
+                margin-top: 20px;
+                padding: 10px;
+                background: #f0fff0;
+                border: 1px solid #4CAF50;
+                border-radius: 5px;
+                min-height: 100px;
+                font-size: 0.9em;
+                color: #555;
+                overflow: auto;
+            }
+        </style>
+
         <script>
     // utilities
     function strict_match_ignore_trailing_newline (S, T) {
@@ -61,15 +151,13 @@
                         form.value = "";
                     });
 
-
                     function check (user_submission) {
                         let input = "";
                         
 
                         let answer = "";
                         
-                        answer = String.raw`Hello World
-`;
+                        answer = String.raw`b'Hello World\n'`;
                         
 
                         // LFへ統一
@@ -89,29 +177,49 @@
     </head>
 
     <body>
-        <p><a href="https://inthebloom.github.io/basic-data-processing/">トップページに戻る</a></p>
+        <nav class="custom-menu">
+            <a href="/">トップページに戻る</a>
+        </nav>
 
-        <h1>Hello World!</h1>
-        <h2>問題文</h2>
-        <div><code>Hello World</code>と出力したファイルを作成してください。</div>
+        <main>
+            <h1>Hello World!</h1>
 
-        <h2>入力</h2>
-        <div>入力は与えられません。</div>
-        
+            <section>
+                <h2>問題文</h2>
+                <div><code>Hello World</code>と出力したファイルを作成してください。</div>
+            </section>
 
-        <h2>出力</h2>
-        <div><code>Hello World</code>のみを含むテキストを作成してください。</div>
+            <section>
+                <h2>入力</h2>
+                <div>入力は与えられません。</div>
+                
+            </section>
 
-        
-        <h2>補足</h2>
-        <div>utf-8を使用してください。</div>
-        
+            <section>
+                <h2>出力</h2>
+                <div><code>Hello World</code>のみを含むテキストを作成してください。</div>
+            </section>
 
-        <h2>提出</h2>
-            <label for="hello-world_fileinput"><p>提出ファイルを選択してください。</p></label>
-            <input type="file" id="hello-world_input" name="hello-world_fileinput">
-            <button id="hello-world_submit">提出</button>
-            <p>ジャッジ詳細情報</p>
-            <div id="hello-world_judge_details"></div>
+            
+            <section>
+                <h2>補足</h2>
+                <div>utf-8を使用してください。</div>
+            </section>
+            
+
+            <section>
+                <h2>提出</h2>
+                <div class="file-input">
+                    <label for="hello-world_fileinput"><p>提出ファイルを選択してください。</p></label>
+                    <input type="file" id="hello-world_input" name="hello-world_fileinput">
+                </div>
+                <button id="hello-world_submit">提出</button>
+            </section>
+
+            <section>
+                <h2>ジャッジの詳細情報</h2>
+                <div class="judge-details" id="hello-world_judge_details"></div>
+            </section>
+        </main>
     </body>
 </html>

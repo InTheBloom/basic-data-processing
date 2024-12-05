@@ -36,8 +36,9 @@ class FileBuilder:
             if not module_dir.is_dir():
                 raise Exception(f"{module_dir} is not directory.")
 
-        if len(baseURL) == 0 or not baseURL[-1] == "/":
-            baseURL += "/"
+        # パス区切り文字は消す
+        if 0 < len(baseURL) == 0 and baseURL[-1] == "/":
+            baseURL = baseURL[0:-1]
 
         if not module_dir is None:
             module_dir = module_dir.resolve()
@@ -58,7 +59,7 @@ class FileBuilder:
 
         for entry, binary in self.other.items():
             context[FileType.OTHER.value][str(entry)] = {}
-            context[FileType.OTHER.value][str(entry)]["value"] = binary.decode("utf-8")
+            context[FileType.OTHER.value][str(entry)]["value"] = binary
             context[FileType.OTHER.value][str(entry)]["path"] = str(entry)
 
         def load_all_module ():
