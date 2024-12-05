@@ -4,11 +4,15 @@
     "title" : "Prime Factorization",
 
     "problemTitle" : "Prime Factorization",
+    "problemId": "8543caa8-ff38-49ad-87d6-75257eca9bf3",
     "problemStatement" : "整数Nが与えられます。Nを素因数分解してください。",
     "inputDescription" : "入力ファイルは次の形式です。<pre><code>T\nN1\nN2\n...\nNT</code></pre>Tは200以下、2以上Nは1000以下です。",
     "inputFilePath" : "in.txt",
     "outputDescription" : "T行出力してください。i行目にはNiを素因数分解した結果をNi = p1 * p2 * ... * pk (p1 <= p2 <= ... <= pk)とするとき、<pre><code>p1 p2 ... pk</code></pre>の形式で出力したファイルを作成してください。",
     "outputFilePath" : "out.txt",
     "moreInformation" : "各行では、末尾の空白は許容されません。注意してください。",
-    "judgeFilePath" : ""
+    "judgeFilePath" : "",
+    "examples": [
+        {"input": "2\n5\n6", "output": "5\n2 3", "description": "T = 2のケースです。2個目の入力は6で、6 = 2 × 3であるから2行目に2 3を出力します。"}
+    ]
 }

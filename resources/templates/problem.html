@@ -159,7 +159,7 @@
         </nav>
 
         <main>
-            <h1>{{ problem[here]["problemTitle"] }}</h1>
+            <h1>{{ problem[here]["problemTitle"] }} (Problem ID: {{ problem[here]["problemId"] }})</h1>
 
             <section>
                 <h2>問題文</h2>
@@ -178,6 +178,19 @@
                 <h2>出力</h2>
                 <div>{{ problem[here]["outputDescription"] }}</div>
             </section>
+
+            {% for example in problem[here]["examples"] %}
+            <section>
+                <h2>入力例{{ loop.index }}</h2>
+                <pre><code>{{ example["input"] }}</code></pre>
+                <h2>出力例{{ loop.index }}</h2>
+                <pre><code>{{ example["output"] }}</code></pre>
+
+                {% if example["description"] != "" %}
+                <div>{{ example["description"] }}</div>
+                {% endif %}
+            </section>
+            {% endfor %}
 
             {% if not problem[here]["moreInformation"] == "" %}
             <section>

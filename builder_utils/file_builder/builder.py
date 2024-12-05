@@ -36,13 +36,13 @@ class FileBuilder:
             if not module_dir.is_dir():
                 raise Exception(f"{module_dir} is not directory.")
 
-        # パス区切り文字は消す
-        if 0 < len(baseURL) == 0 and baseURL[-1] == "/":
-            baseURL = baseURL[0:-1]
-
         if not module_dir is None:
             module_dir = module_dir.resolve()
         rootdir = rootdir.resolve()
+
+        # パス区切り文字は消す
+        if 0 < len(baseURL) and baseURL[-1] == "/":
+            baseURL = baseURL[0:-1]
 
         # 辞書の構築(特殊フィールドの追加も含めて)
         from builder_utils.constants import FileType

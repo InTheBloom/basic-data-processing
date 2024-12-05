@@ -264,7 +264,7 @@ other -> そのまま構築する。
 contextは次のような形式
 other、problem、meta、here、baseURL、moduleのフィールドを持つ。
 hereはconfig.jsonのあるディレクトリのルートからの相対パス
-baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/など)
+baseURLはルートの絶対パスを指す。(/やhttps://hogehoge/など) -> 文字列の最後にセパレータがある場合、自動的に取り除かれます。単純な文字列処理で実現してるので、フェイルセーフではないです。
 other、problem、metaの各エントリは自分のパスを持つ
 
 - other : context[OTHER.value][(パス(ファイル名含む))] = {path: (パス(ファイル名含む)、ファイル名含む), value: (内容)}
@@ -275,3 +275,28 @@ other、problem、metaの各エントリは自分のパスを持つ
 の形式に従う。
 それぞれpathは「そのファイルがあるディレクトリ」のルートからの相対パス。
 otherのみファイル名を含むことに注意。
+
+JSON(ファイル名はconfig.jsonのみ許容)に必須な属性の定義
+# common
+- fileType: "problem"|"meta"
+- templateFileName: str
+- title: str
+
+# problem
+- problemTitle: str
+- problemId: str (uuidなどを想定。ここもフェイルセーフでないです。)
+- problemStatement: str
+- inputDescription: str
+- inputFilePath: str
+- outputDescription: str
+- outputFilePath: str
+- moreInformation: str
+- judgeFilePath: str
+- examples: list (listの中身のバリデーションをしてません。現状{"input": str, "output": str, "description": str}で運用しています。)
+
+# meta
+
+# 辞書へ変換された際に暗黙に定義されるもの
+- path: str
+- baseURL: str
+- module: {str}

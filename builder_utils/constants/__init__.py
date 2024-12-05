@@ -16,6 +16,7 @@ RequiredJsonKeysCommon = {
 
 RequiredJsonKeysProblem = {
     "problemTitle": str,
+    "problemId": str,
     "problemStatement": str,
     "inputDescription": str,
     "inputFilePath": str,
@@ -23,6 +24,7 @@ RequiredJsonKeysProblem = {
     "outputFilePath": str,
     "moreInformation": str,
     "judgeFilePath": str,
+    "examples": list,
 }
 
 RequiredJsonKeysMeta = {

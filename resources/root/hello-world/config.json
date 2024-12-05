@@ -4,11 +4,14 @@
     "title" : "Hello World!",
 
     "problemTitle" : "Hello World!",
+    "problemId": "340836e1-6216-420f-8e20-b4b85bcf5647",
     "problemStatement" : "<code>Hello World</code>と出力したファイルを作成してください。",
     "inputDescription" : "入力は与えられません。",
     "inputFilePath" : "",
     "outputDescription" : "<code>Hello World</code>のみを含むテキストを作成してください。",
     "outputFilePath" : "./out.txt",
     "moreInformation" : "utf-8を使用してください。",
-    "judgeFilePath" : ""
+    "judgeFilePath" : "",
+    "examples": [
+    ]
 }
